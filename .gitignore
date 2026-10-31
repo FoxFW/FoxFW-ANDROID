@@ -1,0 +1,25 @@
+# ---- Gradle / Android build output ----
+.gradle/
+build/
+app/build/
+captures/
+.cxx/
+*.apk
+*.aab
+
+# ---- Machine-specific config (never commit; each machine has its own) ----
+# local.properties holds sdk.dir for THIS machine. Android Studio regenerates it
+# on open; command-line builds can instead set the ANDROID_HOME env var.
+local.properties
+
+# ---- Signing secrets (never commit) ----
+*.keystore
+*.jks
+keystore.properties
+signing.properties
+
+# ---- IDE / OS noise ----
+.idea/
+*.iml
+.DS_Store
+Thumbs.db

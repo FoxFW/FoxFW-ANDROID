@@ -1,0 +1,4 @@
+# host-test binaries
+test_pic_core
+test_cracker
+*.o
