@@ -1,0 +1,87 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.6.0"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "foxsolver",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "chamcrypto::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-chamcrypto-Debug-a8d2d3b0a3b5877d99eb.json",
+					"name" : "chamcrypto",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "foxgpu::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-foxgpu-Debug-5a00584398af2bc9df5d.json",
+					"name" : "foxgpu",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "foxsolver::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-foxsolver-Debug-a3e7ec6884b1e7d6ed48.json",
+					"name" : "foxsolver",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "pandora::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-pandora-Debug-b1de1700bef126f2523c.json",
+					"name" : "pandora",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "D:/FoxFW-ANDROID/app/.cxx/Debug/2m21115a/arm64-v8a",
+		"source" : "D:/FoxFW-ANDROID/app/src/main/cpp"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

@@ -5,7 +5,7 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-/** JVM unit tests for the pure Marauder<->Fox ESP32 FW dialect bridge (no USB/BLE). */
+/** JVM unit tests for the pure Esp32<->Fox ESP32 FW dialect bridge (no USB/BLE). */
 class FoxEsp32DialectTest {
 
     private fun one(cmd: String): String {
@@ -75,6 +75,11 @@ class FoxEsp32DialectTest {
         assertEquals("WIFISNIFF:RAW", one("sniffraw"))
     }
 
+    @Test fun captureFormMapsToDeauthPlusPcap() {
+        assertEquals(listOf("WIFIATTACK:DEAUTH", "WIFIPCAP"), FoxEsp32Dialect.toFox("sniffpmkid -c 6 -d").send)
+        assertEquals(listOf("WIFIPCAP"), FoxEsp32Dialect.toFox("sniffpmkid -c 6").send)
+    }
+
     @Test fun bleSpamClassMaps() {
         assertEquals("BLESPAM:IOS", one("blespam -t sourapple"))
         assertEquals("BLESPAM:IOS", one("blespam -t applejuice"))
@@ -107,14 +112,14 @@ class FoxEsp32DialectTest {
         assertEquals("WIFISIGMON", one("WIFISIGMON")) // a raw Fox command typed in the console
     }
 
-    // ---- inbound: Fox output -> Marauder format ----
-    @Test fun apRowRebuildsToMarauder() {
+    // ---- inbound: Fox output -> Esp32 format ----
+    @Test fun apRowRebuildsToEsp32() {
         assertEquals(
             "[0][CH:6] MyNet -45",
             FoxEsp32Dialect.fromFox("""AP:0 ssid:"MyNet" bssid:AA:BB:CC:DD:EE:FF ch:6 rssi:-45 enc:WPA2""", -1),
         )
-        // and the rebuilt row must parse back through the app's existing Marauder parser:
-        val ap = Marauder.parseAp(
+        // and the rebuilt row must parse back through the app's existing Esp32 parser:
+        val ap = Esp32.parseAp(
             FoxEsp32Dialect.fromFox("""AP:1 ssid:"Net5" bssid:AA:BB:CC:DD:EE:01 ch:36 rssi:-60 enc:WPA2""", -1)!!,
         )!!
         assertEquals(1, ap.index); assertEquals(36, ap.channel); assertEquals(-60, ap.rssi)
@@ -131,7 +136,7 @@ class FoxEsp32DialectTest {
     @Test fun staRowRebuilds() {
         val s = FoxEsp32Dialect.fromFox("STA:4 mac:11:22:33:44:55:66 rssi:-70", -1)!!
         assertEquals("[4] 11:22:33:44:55:66", s)
-        assertEquals(4, Marauder.parseSta(s)!!.index)
+        assertEquals(4, Esp32.parseSta(s)!!.index)
     }
 
     @Test fun terminatorsSwallowed() {
@@ -146,6 +151,6 @@ class FoxEsp32DialectTest {
 
     @Test fun detectsFoxBanner() {
         assertTrue(FoxEsp32Dialect.isFoxBanner("Fox ESP32 Firmware"))
-        assertTrue(!FoxEsp32Dialect.isFoxBanner("Marauder v1.20.0"))
+        assertTrue(!FoxEsp32Dialect.isFoxBanner("Esp32 v1.20.0"))
     }
 }

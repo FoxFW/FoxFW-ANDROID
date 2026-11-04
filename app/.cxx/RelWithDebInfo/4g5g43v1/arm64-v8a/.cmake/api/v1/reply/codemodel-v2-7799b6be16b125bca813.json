@@ -1,0 +1,87 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-RelWithDebInfo-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.6.0"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"name" : "RelWithDebInfo",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "foxsolver",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "chamcrypto::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-chamcrypto-RelWithDebInfo-c486d41a28ced3beb718.json",
+					"name" : "chamcrypto",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "foxgpu::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-foxgpu-RelWithDebInfo-f202cf9d0787639f2149.json",
+					"name" : "foxgpu",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "foxsolver::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-foxsolver-RelWithDebInfo-9cea4d44b9f9836abfd5.json",
+					"name" : "foxsolver",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "pandora::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-pandora-RelWithDebInfo-e7d0da2079d31589b242.json",
+					"name" : "pandora",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "D:/FoxFW-ANDROID/app/.cxx/RelWithDebInfo/4g5g43v1/arm64-v8a",
+		"source" : "D:/FoxFW-ANDROID/app/src/main/cpp"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

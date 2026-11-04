@@ -13,13 +13,19 @@ interface FlipperLink {
     val connected: Boolean
     suspend fun storageMkdir(path: String): Boolean = false
     suspend fun storageDelete(path: String, recursive: Boolean = true): Boolean = false
-    suspend fun storageWrite(path: String, data: ByteArray): Boolean = false
+    suspend fun storageWrite(path: String, data: ByteArray, onProgress: ((Long, Long) -> Unit)? = null): Boolean = false
     suspend fun storageRead(path: String): ByteArray? = null
     suspend fun storageList(path: String): List<Proto.FileEntry>? = null
     suspend fun storageRename(oldPath: String, newPath: String): Boolean = false
     suspend fun storageBackupCreate(archivePath: String): Boolean = false
     suspend fun storageBackupRestore(archivePath: String): Boolean = false
     suspend fun appStart(name: String, args: String): Boolean = false
+    /** True if [path] exists on the Flipper SD. */
+    suspend fun storageStat(path: String): Boolean = false
+    /** Device-info / power-info key-value pairs, or null if unsupported on this link. */
+    suspend fun deviceInfo(): List<Pair<String, String>>? = null
+    suspend fun powerInfo(): List<Pair<String, String>>? = null
+    suspend fun getDateTime(): Proto.DateTime? = null
     /** Arm an SD-staged firmware update; returns UpdatePrepareResult (0 = OK). -1 = no response. */
     suspend fun systemUpdate(manifestPath: String): Int = -1
     /** Reboot the Flipper. mode 0=OS, 1=DFU, 2=UPDATE (applies a staged update). */

@@ -1,0 +1,61 @@
+{
+  "buildFiles": [
+    "D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "C:\\Users\\PC\\AppData\\Local\\Android\\Sdk\\cmake\\3.22.1\\bin\\ninja.exe",
+      "-C",
+      "D:\\FoxFW-ANDROID\\app\\.cxx\\RelWithDebInfo\\4g5g43v1\\arm64-v8a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "C:\\Users\\PC\\AppData\\Local\\Android\\Sdk\\cmake\\3.22.1\\bin\\ninja.exe",
+    "-C",
+    "D:\\FoxFW-ANDROID\\app\\.cxx\\RelWithDebInfo\\4g5g43v1\\arm64-v8a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "chamcrypto::@6890427a1f51a3e7e1df": {
+      "toolchain": "toolchain",
+      "abi": "arm64-v8a",
+      "artifactName": "chamcrypto",
+      "output": "D:\\FoxFW-ANDROID\\app\\build\\intermediates\\cxx\\RelWithDebInfo\\4g5g43v1\\obj\\arm64-v8a\\libchamcrypto.so",
+      "runtimeFiles": []
+    },
+    "foxgpu::@6890427a1f51a3e7e1df": {
+      "toolchain": "toolchain",
+      "abi": "arm64-v8a",
+      "artifactName": "foxgpu",
+      "output": "D:\\FoxFW-ANDROID\\app\\build\\intermediates\\cxx\\RelWithDebInfo\\4g5g43v1\\obj\\arm64-v8a\\libfoxgpu.so",
+      "runtimeFiles": []
+    },
+    "foxsolver::@6890427a1f51a3e7e1df": {
+      "toolchain": "toolchain",
+      "abi": "arm64-v8a",
+      "artifactName": "foxsolver",
+      "output": "D:\\FoxFW-ANDROID\\app\\build\\intermediates\\cxx\\RelWithDebInfo\\4g5g43v1\\obj\\arm64-v8a\\libfoxsolver.so",
+      "runtimeFiles": []
+    },
+    "pandora::@6890427a1f51a3e7e1df": {
+      "toolchain": "toolchain",
+      "abi": "arm64-v8a",
+      "artifactName": "pandora",
+      "output": "D:\\FoxFW-ANDROID\\app\\build\\intermediates\\cxx\\RelWithDebInfo\\4g5g43v1\\obj\\arm64-v8a\\libpandora.so",
+      "runtimeFiles": []
+    }
+  },
+  "toolchains": {
+    "toolchain": {
+      "cCompilerExecutable": "C:\\Users\\PC\\AppData\\Local\\Android\\Sdk\\ndk\\26.1.10909125\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang.exe",
+      "cppCompilerExecutable": "C:\\Users\\PC\\AppData\\Local\\Android\\Sdk\\ndk\\26.1.10909125\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe"
+    }
+  },
+  "cFileExtensions": [
+    "c"
+  ],
+  "cppFileExtensions": [
+    "cpp"
+  ]
+}

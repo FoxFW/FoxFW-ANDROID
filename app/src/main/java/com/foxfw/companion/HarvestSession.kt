@@ -24,9 +24,9 @@ class HarvestSession {
     }
 }
 
-/** Extracts the per-metric high-water counts from a window of Marauder sniffpmkid serial output. */
+/** Extracts the per-metric high-water counts from a window of Esp32 sniffpmkid serial output. */
 object HarvestParse {
-    // ESP32-Marauder v1.20.0 (C5) prints a bare "    EAPOL: N" frames-seen line in its stats block
+    // ESP32 v1.20.0 (C5) prints a bare "    EAPOL: N" frames-seen line in its stats block
     // (no "Received" prefix) plus a separate "Complete EAPOL: N". Match the bare line at line-start so
     // "Complete EAPOL" is NOT counted as received; still accept the older "Received EAPOL" wording.
     private val RECEIVED = Regex("""^[ \t]*(?:Received )?EAPOL:[ \t]*(\d+)""", setOf(RegexOption.IGNORE_CASE, RegexOption.MULTILINE))

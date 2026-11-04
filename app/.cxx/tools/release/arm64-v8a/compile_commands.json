@@ -1,0 +1,107 @@
+[
+{
+  "directory": "D:/FoxFW-ANDROID/app/.cxx/RelWithDebInfo/4g5g43v1/arm64-v8a",
+  "command": "C:\\Users\\PC\\AppData\\Local\\Android\\Sdk\\ndk\\26.1.10909125\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang.exe --target=aarch64-none-linux-android26 --sysroot=C:/Users/PC/AppData/Local/Android/Sdk/ndk/26.1.10909125/toolchains/llvm/prebuilt/windows-x86_64/sysroot -Dfoxsolver_EXPORTS -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -g -DNDEBUG -fPIC -O3 -fno-strict-aliasing -o CMakeFiles\\foxsolver.dir\\native_solver.c.o -c D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\native_solver.c",
+  "file": "D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\native_solver.c"
+},
+{
+  "directory": "D:/FoxFW-ANDROID/app/.cxx/RelWithDebInfo/4g5g43v1/arm64-v8a",
+  "command": "C:\\Users\\PC\\AppData\\Local\\Android\\Sdk\\ndk\\26.1.10909125\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang.exe --target=aarch64-none-linux-android26 --sysroot=C:/Users/PC/AppData/Local/Android/Sdk/ndk/26.1.10909125/toolchains/llvm/prebuilt/windows-x86_64/sysroot -Dfoxsolver_EXPORTS -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -g -DNDEBUG -fPIC -O3 -fno-strict-aliasing -o CMakeFiles\\foxsolver.dir\\fiat_dict.c.o -c D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\fiat_dict.c",
+  "file": "D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\fiat_dict.c"
+},
+{
+  "directory": "D:/FoxFW-ANDROID/app/.cxx/RelWithDebInfo/4g5g43v1/arm64-v8a",
+  "command": "C:\\Users\\PC\\AppData\\Local\\Android\\Sdk\\ndk\\26.1.10909125\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang.exe --target=aarch64-none-linux-android26 --sysroot=C:/Users/PC/AppData/Local/Android/Sdk/ndk/26.1.10909125/toolchains/llvm/prebuilt/windows-x86_64/sysroot -Dfoxsolver_EXPORTS -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -g -DNDEBUG -fPIC -O3 -fno-strict-aliasing -o CMakeFiles\\foxsolver.dir\\fiat_full.c.o -c D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\fiat_full.c",
+  "file": "D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\fiat_full.c"
+},
+{
+  "directory": "D:/FoxFW-ANDROID/app/.cxx/RelWithDebInfo/4g5g43v1/arm64-v8a",
+  "command": "C:\\Users\\PC\\AppData\\Local\\Android\\Sdk\\ndk\\26.1.10909125\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang.exe --target=aarch64-none-linux-android26 --sysroot=C:/Users/PC/AppData/Local/Android/Sdk/ndk/26.1.10909125/toolchains/llvm/prebuilt/windows-x86_64/sysroot -Dfoxsolver_EXPORTS -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -g -DNDEBUG -fPIC -O3 -fno-strict-aliasing -o CMakeFiles\\foxsolver.dir\\h2bitslice.c.o -c D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\h2bitslice.c",
+  "file": "D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\h2bitslice.c"
+},
+{
+  "directory": "D:/FoxFW-ANDROID/app/.cxx/RelWithDebInfo/4g5g43v1/arm64-v8a",
+  "command": "C:\\Users\\PC\\AppData\\Local\\Android\\Sdk\\ndk\\26.1.10909125\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang.exe --target=aarch64-none-linux-android26 --sysroot=C:/Users/PC/AppData/Local/Android/Sdk/ndk/26.1.10909125/toolchains/llvm/prebuilt/windows-x86_64/sysroot -Dfoxsolver_EXPORTS -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -g -DNDEBUG -fPIC -O3 -fno-strict-aliasing -o CMakeFiles\\foxsolver.dir\\hitag2_seed.c.o -c D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\hitag2_seed.c",
+  "file": "D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\hitag2_seed.c"
+},
+{
+  "directory": "D:/FoxFW-ANDROID/app/.cxx/RelWithDebInfo/4g5g43v1/arm64-v8a",
+  "command": "C:\\Users\\PC\\AppData\\Local\\Android\\Sdk\\ndk\\26.1.10909125\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=aarch64-none-linux-android26 --sysroot=C:/Users/PC/AppData/Local/Android/Sdk/ndk/26.1.10909125/toolchains/llvm/prebuilt/windows-x86_64/sysroot -Dchamcrypto_EXPORTS -ID:/FoxFW-ANDROID/app/src/main/cpp/cham -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -O2 -g -DNDEBUG -fPIC -O2 -fno-strict-aliasing -std=gnu++17 -o CMakeFiles\\chamcrypto.dir\\cham\\cham_jni.cpp.o -c D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\cham\\cham_jni.cpp",
+  "file": "D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\cham\\cham_jni.cpp"
+},
+{
+  "directory": "D:/FoxFW-ANDROID/app/.cxx/RelWithDebInfo/4g5g43v1/arm64-v8a",
+  "command": "C:\\Users\\PC\\AppData\\Local\\Android\\Sdk\\ndk\\26.1.10909125\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=aarch64-none-linux-android26 --sysroot=C:/Users/PC/AppData/Local/Android/Sdk/ndk/26.1.10909125/toolchains/llvm/prebuilt/windows-x86_64/sysroot -Dchamcrypto_EXPORTS -ID:/FoxFW-ANDROID/app/src/main/cpp/cham -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -O2 -g -DNDEBUG -fPIC -O2 -fno-strict-aliasing -std=gnu++17 -o CMakeFiles\\chamcrypto.dir\\cham\\signal\\darkside.cpp.o -c D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\cham\\signal\\darkside.cpp",
+  "file": "D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\cham\\signal\\darkside.cpp"
+},
+{
+  "directory": "D:/FoxFW-ANDROID/app/.cxx/RelWithDebInfo/4g5g43v1/arm64-v8a",
+  "command": "C:\\Users\\PC\\AppData\\Local\\Android\\Sdk\\ndk\\26.1.10909125\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=aarch64-none-linux-android26 --sysroot=C:/Users/PC/AppData/Local/Android/Sdk/ndk/26.1.10909125/toolchains/llvm/prebuilt/windows-x86_64/sysroot -Dchamcrypto_EXPORTS -ID:/FoxFW-ANDROID/app/src/main/cpp/cham -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -O2 -g -DNDEBUG -fPIC -O2 -fno-strict-aliasing -std=gnu++17 -o CMakeFiles\\chamcrypto.dir\\cham\\signal\\mfkey32_lowmem.cpp.o -c D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\cham\\signal\\mfkey32_lowmem.cpp",
+  "file": "D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\cham\\signal\\mfkey32_lowmem.cpp"
+},
+{
+  "directory": "D:/FoxFW-ANDROID/app/.cxx/RelWithDebInfo/4g5g43v1/arm64-v8a",
+  "command": "C:\\Users\\PC\\AppData\\Local\\Android\\Sdk\\ndk\\26.1.10909125\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang.exe --target=aarch64-none-linux-android26 --sysroot=C:/Users/PC/AppData/Local/Android/Sdk/ndk/26.1.10909125/toolchains/llvm/prebuilt/windows-x86_64/sysroot -Dchamcrypto_EXPORTS -ID:/FoxFW-ANDROID/app/src/main/cpp/cham -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -g -DNDEBUG -fPIC -O2 -fno-strict-aliasing -o CMakeFiles\\chamcrypto.dir\\cham\\signal\\crapto1\\crapto1.c.o -c D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\cham\\signal\\crapto1\\crapto1.c",
+  "file": "D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\cham\\signal\\crapto1\\crapto1.c"
+},
+{
+  "directory": "D:/FoxFW-ANDROID/app/.cxx/RelWithDebInfo/4g5g43v1/arm64-v8a",
+  "command": "C:\\Users\\PC\\AppData\\Local\\Android\\Sdk\\ndk\\26.1.10909125\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang.exe --target=aarch64-none-linux-android26 --sysroot=C:/Users/PC/AppData/Local/Android/Sdk/ndk/26.1.10909125/toolchains/llvm/prebuilt/windows-x86_64/sysroot -Dchamcrypto_EXPORTS -ID:/FoxFW-ANDROID/app/src/main/cpp/cham -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -g -DNDEBUG -fPIC -O2 -fno-strict-aliasing -o CMakeFiles\\chamcrypto.dir\\cham\\signal\\crapto1\\crypto1.c.o -c D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\cham\\signal\\crapto1\\crypto1.c",
+  "file": "D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\cham\\signal\\crapto1\\crypto1.c"
+},
+{
+  "directory": "D:/FoxFW-ANDROID/app/.cxx/RelWithDebInfo/4g5g43v1/arm64-v8a",
+  "command": "C:\\Users\\PC\\AppData\\Local\\Android\\Sdk\\ndk\\26.1.10909125\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang.exe --target=aarch64-none-linux-android26 --sysroot=C:/Users/PC/AppData/Local/Android/Sdk/ndk/26.1.10909125/toolchains/llvm/prebuilt/windows-x86_64/sysroot -Dchamcrypto_EXPORTS -ID:/FoxFW-ANDROID/app/src/main/cpp/cham -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -g -DNDEBUG -fPIC -O2 -fno-strict-aliasing -o CMakeFiles\\chamcrypto.dir\\cham\\signal\\crapto1\\bucketsort.c.o -c D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\cham\\signal\\crapto1\\bucketsort.c",
+  "file": "D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\cham\\signal\\crapto1\\bucketsort.c"
+},
+{
+  "directory": "D:/FoxFW-ANDROID/app/.cxx/RelWithDebInfo/4g5g43v1/arm64-v8a",
+  "command": "C:\\Users\\PC\\AppData\\Local\\Android\\Sdk\\ndk\\26.1.10909125\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang.exe --target=aarch64-none-linux-android26 --sysroot=C:/Users/PC/AppData/Local/Android/Sdk/ndk/26.1.10909125/toolchains/llvm/prebuilt/windows-x86_64/sysroot -Dpandora_EXPORTS -ID:/FoxFW-ANDROID/app/src/main/cpp/pandora -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -g -DNDEBUG -fPIC -O2 -fno-strict-aliasing -o CMakeFiles\\pandora.dir\\pandora\\pandora_jni.c.o -c D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\pandora\\pandora_jni.c",
+  "file": "D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\pandora\\pandora_jni.c"
+},
+{
+  "directory": "D:/FoxFW-ANDROID/app/.cxx/RelWithDebInfo/4g5g43v1/arm64-v8a",
+  "command": "C:\\Users\\PC\\AppData\\Local\\Android\\Sdk\\ndk\\26.1.10909125\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang.exe --target=aarch64-none-linux-android26 --sysroot=C:/Users/PC/AppData/Local/Android/Sdk/ndk/26.1.10909125/toolchains/llvm/prebuilt/windows-x86_64/sysroot -Dpandora_EXPORTS -ID:/FoxFW-ANDROID/app/src/main/cpp/pandora -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -g -DNDEBUG -fPIC -O2 -fno-strict-aliasing -o CMakeFiles\\pandora.dir\\pandora\\pa_emu.c.o -c D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\pandora\\pa_emu.c",
+  "file": "D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\pandora\\pa_emu.c"
+},
+{
+  "directory": "D:/FoxFW-ANDROID/app/.cxx/RelWithDebInfo/4g5g43v1/arm64-v8a",
+  "command": "C:\\Users\\PC\\AppData\\Local\\Android\\Sdk\\ndk\\26.1.10909125\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang.exe --target=aarch64-none-linux-android26 --sysroot=C:/Users/PC/AppData/Local/Android/Sdk/ndk/26.1.10909125/toolchains/llvm/prebuilt/windows-x86_64/sysroot -Dpandora_EXPORTS -ID:/FoxFW-ANDROID/app/src/main/cpp/pandora -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -g -DNDEBUG -fPIC -O2 -fno-strict-aliasing -o CMakeFiles\\pandora.dir\\pandora\\pa_rf.c.o -c D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\pandora\\pa_rf.c",
+  "file": "D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\pandora\\pa_rf.c"
+},
+{
+  "directory": "D:/FoxFW-ANDROID/app/.cxx/RelWithDebInfo/4g5g43v1/arm64-v8a",
+  "command": "C:\\Users\\PC\\AppData\\Local\\Android\\Sdk\\ndk\\26.1.10909125\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang.exe --target=aarch64-none-linux-android26 --sysroot=C:/Users/PC/AppData/Local/Android/Sdk/ndk/26.1.10909125/toolchains/llvm/prebuilt/windows-x86_64/sysroot -Dpandora_EXPORTS -ID:/FoxFW-ANDROID/app/src/main/cpp/pandora -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -g -DNDEBUG -fPIC -O2 -fno-strict-aliasing -o CMakeFiles\\pandora.dir\\pandora\\thumb_core.c.o -c D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\pandora\\thumb_core.c",
+  "file": "D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\pandora\\thumb_core.c"
+},
+{
+  "directory": "D:/FoxFW-ANDROID/app/.cxx/RelWithDebInfo/4g5g43v1/arm64-v8a",
+  "command": "C:\\Users\\PC\\AppData\\Local\\Android\\Sdk\\ndk\\26.1.10909125\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang.exe --target=aarch64-none-linux-android26 --sysroot=C:/Users/PC/AppData/Local/Android/Sdk/ndk/26.1.10909125/toolchains/llvm/prebuilt/windows-x86_64/sysroot -Dpandora_EXPORTS -ID:/FoxFW-ANDROID/app/src/main/cpp/pandora -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -g -DNDEBUG -fPIC -O2 -fno-strict-aliasing -o CMakeFiles\\pandora.dir\\pandora\\pic18_core.c.o -c D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\pandora\\pic18_core.c",
+  "file": "D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\pandora\\pic18_core.c"
+},
+{
+  "directory": "D:/FoxFW-ANDROID/app/.cxx/RelWithDebInfo/4g5g43v1/arm64-v8a",
+  "command": "C:\\Users\\PC\\AppData\\Local\\Android\\Sdk\\ndk\\26.1.10909125\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang.exe --target=aarch64-none-linux-android26 --sysroot=C:/Users/PC/AppData/Local/Android/Sdk/ndk/26.1.10909125/toolchains/llvm/prebuilt/windows-x86_64/sysroot -Dpandora_EXPORTS -ID:/FoxFW-ANDROID/app/src/main/cpp/pandora -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -g -DNDEBUG -fPIC -O2 -fno-strict-aliasing -o CMakeFiles\\pandora.dir\\pandora\\ihex.c.o -c D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\pandora\\ihex.c",
+  "file": "D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\pandora\\ihex.c"
+},
+{
+  "directory": "D:/FoxFW-ANDROID/app/.cxx/RelWithDebInfo/4g5g43v1/arm64-v8a",
+  "command": "C:\\Users\\PC\\AppData\\Local\\Android\\Sdk\\ndk\\26.1.10909125\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang.exe --target=aarch64-none-linux-android26 --sysroot=C:/Users/PC/AppData/Local/Android/Sdk/ndk/26.1.10909125/toolchains/llvm/prebuilt/windows-x86_64/sysroot -Dpandora_EXPORTS -ID:/FoxFW-ANDROID/app/src/main/cpp/pandora -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -g -DNDEBUG -fPIC -O2 -fno-strict-aliasing -o CMakeFiles\\pandora.dir\\pandora\\pic_emu.c.o -c D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\pandora\\pic_emu.c",
+  "file": "D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\pandora\\pic_emu.c"
+},
+{
+  "directory": "D:/FoxFW-ANDROID/app/.cxx/RelWithDebInfo/4g5g43v1/arm64-v8a",
+  "command": "C:\\Users\\PC\\AppData\\Local\\Android\\Sdk\\ndk\\26.1.10909125\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang.exe --target=aarch64-none-linux-android26 --sysroot=C:/Users/PC/AppData/Local/Android/Sdk/ndk/26.1.10909125/toolchains/llvm/prebuilt/windows-x86_64/sysroot -Dpandora_EXPORTS -ID:/FoxFW-ANDROID/app/src/main/cpp/pandora -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -g -DNDEBUG -fPIC -O2 -fno-strict-aliasing -o CMakeFiles\\pandora.dir\\pandora\\cracker.c.o -c D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\pandora\\cracker.c",
+  "file": "D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\pandora\\cracker.c"
+},
+{
+  "directory": "D:/FoxFW-ANDROID/app/.cxx/RelWithDebInfo/4g5g43v1/arm64-v8a",
+  "command": "C:\\Users\\PC\\AppData\\Local\\Android\\Sdk\\ndk\\26.1.10909125\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang.exe --target=aarch64-none-linux-android26 --sysroot=C:/Users/PC/AppData/Local/Android/Sdk/ndk/26.1.10909125/toolchains/llvm/prebuilt/windows-x86_64/sysroot -Dpandora_EXPORTS -ID:/FoxFW-ANDROID/app/src/main/cpp/pandora -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -g -DNDEBUG -fPIC -O2 -fno-strict-aliasing -o CMakeFiles\\pandora.dir\\pandora\\crack_jni.c.o -c D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\pandora\\crack_jni.c",
+  "file": "D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\pandora\\crack_jni.c"
+},
+{
+  "directory": "D:/FoxFW-ANDROID/app/.cxx/RelWithDebInfo/4g5g43v1/arm64-v8a",
+  "command": "C:\\Users\\PC\\AppData\\Local\\Android\\Sdk\\ndk\\26.1.10909125\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=aarch64-none-linux-android26 --sysroot=C:/Users/PC/AppData/Local/Android/Sdk/ndk/26.1.10909125/toolchains/llvm/prebuilt/windows-x86_64/sysroot -Dfoxgpu_EXPORTS -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -O2 -g -DNDEBUG -fPIC -O2 -std=gnu++17 -o CMakeFiles\\foxgpu.dir\\foxgpu\\gpu_crack.cpp.o -c D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\foxgpu\\gpu_crack.cpp",
+  "file": "D:\\FoxFW-ANDROID\\app\\src\\main\\cpp\\foxgpu\\gpu_crack.cpp"
+}
+]

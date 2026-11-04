@@ -64,12 +64,6 @@ fun CarCloneScreen(onClose: () -> Unit) {
         Modifier.fillMaxWidth().background(Fox.page).verticalScroll(rememberScrollState()).padding(16.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Box(Modifier.size(38.dp).clip(RoundedCornerShape(10.dp)).background(Fox.surface)
-                .border(1.dp, Fox.line, RoundedCornerShape(10.dp)).clickable { onClose() },
-                contentAlignment = Alignment.Center) {
-                Icon(Icons.Filled.ArrowBack, "back", tint = Fox.fg, modifier = Modifier.size(18.dp))
-            }
-            Spacer(Modifier.width(12.dp))
             Column {
                 Eyebrow("CARS · GATES · BARRIERS · ARKE ENGINE")
                 Text("Car & Gate Clone", color = Fox.fg, fontFamily = FoxMono, fontSize = 20.sp, fontWeight = FontWeight.Bold)

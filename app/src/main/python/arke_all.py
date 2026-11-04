@@ -33,6 +33,9 @@ _MODULES = [
     # G4MEOVER18/ProtoPirate ports (2026-09-01): KIA V6 (AES-128, decode-only),
     # KIA V7 (CRC8), Land Rover V0.
     ("arke_kia67_lr", "ALL"),
+    # Full firmware port, Tier A (2026-11-02): fixed-code gate/garage decoders, firmware-exact.
+    ("arke_gates", "ALL"),       # CAME, Nice FLO, GateTX, Ansonic, Holtek, Holtek_HT12X,
+                                 #   Linear, Clemsa, SMC5326, Princeton (PT2262)
 ]
 
 ALL_DECODERS = []

@@ -70,9 +70,9 @@ object WhatsNew {
         Item(
             Icons.Outlined.Wifi,
             "Wi-Fi attack suite",
-            "Drive a BFFB v2 (ESP32-C5 Marauder) end to end from the phone — over the Flipper relay or " +
+            "Drive a BFFB v2 (ESP32-C5 Esp32) end to end from the phone — over the Flipper relay or " +
                 "USB. Scan 2.4 + 5 GHz, deauth-assisted handshake capture, continuous auto-harvest, and an " +
-                "Evil Portal manager with a live captured-cred view. Tools → Marauder.",
+                "Evil Portal manager with a live captured-cred view. Tools → Esp32.",
             "WIFI",
         ),
         Item(

@@ -55,12 +55,6 @@ import java.io.File
 @Composable
 private fun ToolHeader(title: String, sub: String, busy: Boolean, onClose: () -> Unit) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Box(Modifier.size(34.dp).clip(RoundedCornerShape(10.dp))
-            .border(1.dp, Fox.line, RoundedCornerShape(10.dp)).clickable { onClose() },
-            contentAlignment = Alignment.Center) {
-            Icon(Icons.Filled.ArrowBack, null, tint = Fox.fg, modifier = Modifier.size(18.dp))
-        }
-        Spacer(Modifier.width(12.dp))
         Column { Text(title, color = Fox.fg, fontSize = 17.sp, fontWeight = FontWeight.SemiBold); Eyebrow(sub) }
         Spacer(Modifier.weight(1f))
         Pill(if (busy) "Busy" else "Ready", if (busy) Fox.amber else Fox.live, if (busy) Fox.amberDim else Fox.liveDim, dot = true)
@@ -334,7 +328,7 @@ fun FreqAnalyzerScreen(onClose: () -> Unit) {
         deploying = true; status = "Pushing fox_subghz_io.fap to the Flipper…"
         scope.launch {
             val bytes = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
-                runCatching { ctx.assets.open("fox_subghz_io.fap").readBytes() }.getOrNull()
+                runCatching { ctx.assets.open("fox_android_companion.fap").readBytes() }.getOrNull()
             }
             if (bytes == null) { deploying = false; status = "FAP asset missing from the app."; return@launch }
             val res = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) { FlipperRf.deployFap(bytes) }

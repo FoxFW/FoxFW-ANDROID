@@ -1,0 +1,26 @@
+# ninja log v5
+53	449	8151385078361470	CMakeFiles/chamcrypto.dir/cham/cham_jni.cpp.o	847e245c18bdee00
+106	482	8151385078560073	CMakeFiles/chamcrypto.dir/cham/signal/crapto1/bucketsort.c.o	4fc01f763d5d345
+1	517	8151385079172955	CMakeFiles/foxsolver.dir/hitag2_seed.c.o	5ace9a01863d2477
+43	560	8151385079660870	CMakeFiles/foxsolver.dir/native_solver.c.o	789dd7ee3e1ec696
+13	629	8151385080067582	CMakeFiles/foxsolver.dir/fiat_full.c.o	9c86db878d893459
+32	795	8151385081563351	CMakeFiles/foxsolver.dir/fiat_dict.c.o	bf20f67acb00ded2
+517	850	8151385082412938	CMakeFiles/pandora.dir/pandora/pa_rf.c.o	4afbd87ce945e4a3
+70	883	8151385082453137	CMakeFiles/chamcrypto.dir/cham/signal/mfkey32_lowmem.cpp.o	666b0c496d67d9e4
+483	937	8151385083383188	CMakeFiles/pandora.dir/pandora/pandora_jni.c.o	1c62c36169a911a7
+451	1340	8151385087382812	CMakeFiles/chamcrypto.dir/cham/signal/crapto1/crypto1.c.o	8835906649ad4a14
+796	1413	8151385088016070	CMakeFiles/pandora.dir/pandora/ihex.c.o	f55b134f7de39865
+561	1440	8151385088390671	CMakeFiles/pandora.dir/pandora/pa_emu.c.o	c20e9a33b633f14d
+939	1451	8151385088531331	CMakeFiles/pandora.dir/pandora/crack_jni.c.o	cf65e0f95ed4f978
+850	1637	8151385090153381	CMakeFiles/pandora.dir/pandora/pic_emu.c.o	d88e5899d29942e7
+93	1724	8151385091279366	CMakeFiles/chamcrypto.dir/cham/signal/crapto1/crapto1.c.o	b22087c5c1774af2
+1340	1862	8151385092699520	CMakeFiles/pandora.dir/pandora/cracker.c.o	b0fa090165c6ca9b
+22	2241	8151385096491092	CMakeFiles/foxsolver.dir/h2bitslice.c.o	c28343010e832b60
+884	2348	8151385097561490	CMakeFiles/pandora.dir/pandora/pic18_core.c.o	9ed17c6154e784b4
+2242	2483	8151385098825607	D:/FoxFW-ANDROID/app/build/intermediates/cxx/Debug/2m21115a/obj/arm64-v8a/libfoxsolver.so	18bf7abafdd38994
+630	2571	8151385099614550	CMakeFiles/pandora.dir/pandora/thumb_core.c.o	c8e502cc8f2fac86
+2572	2765	8151385101658171	D:/FoxFW-ANDROID/app/build/intermediates/cxx/Debug/2m21115a/obj/arm64-v8a/libpandora.so	c78bb12c5d8f42d9
+81	3138	8151385105011236	CMakeFiles/chamcrypto.dir/cham/signal/darkside.cpp.o	23a2bdc8cd475a15
+1414	3306	8151385107100422	CMakeFiles/foxgpu.dir/foxgpu/gpu_crack.cpp.o	878a4486c638a4
+3145	3346	8151385107413874	D:/FoxFW-ANDROID/app/build/intermediates/cxx/Debug/2m21115a/obj/arm64-v8a/libchamcrypto.so	552863f26d0390c
+3307	3473	8151385108665814	D:/FoxFW-ANDROID/app/build/intermediates/cxx/Debug/2m21115a/obj/arm64-v8a/libfoxgpu.so	8bb1d1b571aa4d98

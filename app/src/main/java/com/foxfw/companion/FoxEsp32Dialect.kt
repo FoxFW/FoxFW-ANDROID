@@ -1,15 +1,15 @@
 package com.foxfw.companion
 
 /**
- * Dual-board dialect bridge. The app's whole control layer speaks the stock ESP32-Marauder CLI (see
- * [Marauder]). A stock-Marauder board understands that directly. A board running **Fox ESP32 FW**
+ * Dual-board dialect bridge. The app's whole control layer speaks the stock ESP32 CLI (see
+ * [Esp32]). A stock-Esp32 board understands that directly. A board running **Fox ESP32 FW**
  * does NOT — it uses an uppercase colon-AT vocabulary (`WIFISCANAP`, `WIFIATTACK:DEAUTH`, `BLESPAM:IOS`)
  * and a different output format, and it is synchronous/self-terminating (no `stopscan`). This object
  * translates between the two so the same app drives either board.
  *
- * Pure (no Android / USB / BLE) so it is host-unit-testable, exactly like [Marauder].
+ * Pure (no Android / USB / BLE) so it is host-unit-testable, exactly like [Esp32].
  *
- * Full table + rationale: project doc COMMAND_MAPPING_MARAUDER_TO_FOX_ESP32_2026-10-31.md.
+ * Full table + rationale: see the ESP32 command-mapping project doc (dialect translation design).
  */
 object FoxEsp32Dialect {
 
@@ -20,7 +20,7 @@ object FoxEsp32Dialect {
     fun isFoxBanner(line: String): Boolean = line.trim().contains(FOX_BANNER, ignoreCase = true)
 
     /**
-     * Result of translating one Marauder CLI command for a Fox board.
+     * Result of translating one Esp32 CLI command for a Fox board.
      * [send] = Fox lines to write to the board, in order (empty = nothing goes to the board).
      * [localReply] = a line to feed straight back to the app's line callback without touching the
      * board — used for swallowed commands (`stopscan`) and unsupported ones, so the UI/relay never
@@ -32,7 +32,7 @@ object FoxEsp32Dialect {
     private fun swallow(reply: String) = Out(emptyList(), reply)
     private fun unsupported(cmd: String) = Out(emptyList(), "[fox] not supported on Fox ESP32 FW: $cmd")
 
-    /** Map a Marauder BLE-spam device class to Fox's BLESPAM mode. */
+    /** Map a Esp32 BLE-spam device class to Fox's BLESPAM mode. */
     private fun bleSpamMode(type: String): String = when (type.trim().lowercase()) {
         "sourapple", "applejuice" -> "IOS"
         "google", "android" -> "GOOGLE"
@@ -47,12 +47,12 @@ object FoxEsp32Dialect {
     private fun firstIndex(arg: String): String = arg.trim().split(',', ' ').firstOrNull { it.isNotBlank() }?.trim().orEmpty()
 
     /**
-     * Translate one Marauder CLI line into what a Fox ESP32 FW board should receive.
+     * Translate one Esp32 CLI line into what a Fox ESP32 FW board should receive.
      * Unknown/unmapped lines pass through unchanged, so a raw Fox command typed into the console
      * still works and anything we didn't map at worst reaches the board as-is.
      */
-    fun toFox(marauder: String): Out {
-        val cmd = marauder.trim()
+    fun toFox(esp32: String): Out {
+        val cmd = esp32.trim()
         val lc = cmd.lowercase()
 
         // ---- scan / list (async→sync: map the live poll to a fresh rescan) ----
@@ -96,6 +96,11 @@ object FoxEsp32Dialect {
         // ---- channel ----
         if (lc == "channel") return fox("WIFICHANNEL")
         if (lc.startsWith("channel -s ")) return fox("WIFICHANNEL:" + firstIndex(cmd.substring(11)))
+
+        // Capture/harvest form: "sniffpmkid -c <ch> -d" (deauth-assisted). Fox has no channel/deauth
+        // args on its capture; map "-d" to a deauth burst + full passive capture, else just capture.
+        if (lc.startsWith("sniffpmkid ") || lc.startsWith("sniffpmkid-"))
+            return if (" -d" in lc) fox("WIFIATTACK:DEAUTH", "WIFIPCAP") else fox("WIFIPCAP")
 
         // ---- sniff family ----
         when (lc) {
@@ -154,21 +159,21 @@ object FoxEsp32Dialect {
         return fox(cmd)
     }
 
-    // ----- inbound: Fox output line -> Marauder-format line (or null to swallow) -----
+    // ----- inbound: Fox output line -> Esp32-format line (or null to swallow) -----
 
     private val AP = Regex("""^AP:(\d+)\s+ssid:"(.*)"\s+bssid:(\S+)\s+ch:(-?\d+)\s+rssi:(-?\d+)\s+enc:(\S+)\s*$""")
     private val STA = Regex("""^STA:(\d+)\s+mac:(\S+)\s+rssi:(-?\d+)\s*$""")
     private val TERMINATORS = setOf("SCANDONE", "DONE", "SNIFFDONE", "ATTACKDONE")
 
     /**
-     * Translate one line the Fox board emitted back into the Marauder line format the app's parsers
-     * ([Marauder.parseAp]/[Marauder.parseSta]) expect. Returns null for lines to swallow (scan/attack
+     * Translate one line the Fox board emitted back into the Esp32 line format the app's parsers
+     * ([Esp32.parseAp]/[Esp32.parseSta]) expect. Returns null for lines to swallow (scan/attack
      * terminators). Non-AP/STA status lines (OK / ERROR / ECHO / COUNT / CHANNEL / MAC / MACTRACK and
      * the board's own capture notifications) pass through unchanged so the console + capture
      * heuristics keep working.
      *
      * [selectedApIndex] is the last AP index the adapter selected (via WIFISELECT:AP:n), so the
-     * rebuilt row can carry Marauder's ` (selected)` suffix; pass -1 if none.
+     * rebuilt row can carry Esp32's ` (selected)` suffix; pass -1 if none.
      */
     fun fromFox(line: String, selectedApIndex: Int): String? {
         val l = line.trim()
@@ -181,7 +186,7 @@ object FoxEsp32Dialect {
             val ch = m.groupValues[4]
             val rssi = m.groupValues[5]
             val sel = if (idx.toIntOrNull() == selectedApIndex && selectedApIndex >= 0) " (selected)" else ""
-            // Marauder row: [idx][CH:ch] essid rssi [(selected)]  — hidden/empty essid printed blank.
+            // Esp32 row: [idx][CH:ch] essid rssi [(selected)]  — hidden/empty essid printed blank.
             return "[$idx][CH:$ch] $essid $rssi$sel"
         }
         STA.find(l)?.let { m ->

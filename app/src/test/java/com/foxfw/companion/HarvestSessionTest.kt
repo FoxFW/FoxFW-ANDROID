@@ -19,7 +19,7 @@ class HarvestSessionTest {
     }
 
     @Test fun parseRealV120StatsBlock() {
-        // Real ESP32-Marauder v1.20.0 (C5) sniffpmkid stats: bare "EAPOL: N" + "Complete EAPOL: N",
+        // Real ESP32 v1.20.0 (C5) sniffpmkid stats: bare "EAPOL: N" + "Complete EAPOL: N",
         // no "Received"/"Pwnd". The bare EAPOL max must be read without picking up "Complete EAPOL".
         val out = "     Deauth: 0\n    EAPOL: 4\nComplete EAPOL: 2\n     RSSI: 0 - -128\nDEAUTH TX: TRUE\n" +
             "    EAPOL: 7\nComplete EAPOL: 3\n     RSSI: 0 - -128"

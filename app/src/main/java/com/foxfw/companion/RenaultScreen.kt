@@ -128,12 +128,6 @@ fun RenaultSeedScreen(onClose: () -> Unit) {
 
     Column(Modifier.fillMaxWidth().background(Fox.page).verticalScroll(rememberScrollState()).padding(16.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Box(Modifier.size(38.dp).clip(RoundedCornerShape(10.dp)).background(Fox.surface)
-                .border(1.dp, Fox.line, RoundedCornerShape(10.dp)).clickable { onClose() },
-                contentAlignment = Alignment.Center) {
-                Icon(Icons.Filled.ArrowBack, "back", tint = Fox.fg, modifier = Modifier.size(18.dp))
-            }
-            Spacer(Modifier.width(12.dp))
             Column {
                 Eyebrow("RENAULT V1 · HITAG2 SEED → CLONE")
                 Text("Renault Seed", color = Fox.fg, fontFamily = FoxMono, fontSize = 20.sp, fontWeight = FontWeight.Bold)

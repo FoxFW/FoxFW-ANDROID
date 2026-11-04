@@ -10,7 +10,7 @@ import android.os.VibratorManager
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 
-/** Fires a system notification + buzz when the Marauder relay reports a captured handshake. */
+/** Fires a system notification + buzz when the Esp32 relay reports a captured handshake. */
 object HandshakeNotifier {
     private const val CHANNEL_ID = "foxfw_captures"
     private var nextId = 2200
@@ -36,7 +36,7 @@ object HandshakeNotifier {
         if (mgr.getNotificationChannel(CHANNEL_ID) == null) {
             mgr.createNotificationChannel(
                 NotificationChannel(CHANNEL_ID, "Captures", NotificationManager.IMPORTANCE_HIGH).apply {
-                    description = "WiFi handshake / PMKID captures from the Marauder"
+                    description = "WiFi handshake / PMKID captures from the Esp32"
                     enableVibration(true)
                 },
             )

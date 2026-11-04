@@ -41,9 +41,9 @@ fun parseFobInfo(json: String): FobInfo? = try {
         buttons = btns,
         freqHz = o.optInt("freq_hz", 433920000),
         preset = o.optString("preset", "AM650"),
-        customRegs = if (o.isNull("custom_regs")) null else o.optString("custom_regs", null),
+        customRegs = if (o.isNull("custom_regs")) null else o.optString("custom_regs", ""),
         gate = o.optBoolean("gate", false),
-        fwProtocol = if (o.isNull("fw_protocol")) null else o.optString("fw_protocol", null),
+        fwProtocol = if (o.isNull("fw_protocol")) null else o.optString("fw_protocol", ""),
     )
 } catch (t: Throwable) {
     null

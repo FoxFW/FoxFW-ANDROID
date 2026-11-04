@@ -1,0 +1,6 @@
+D:/FoxFW-ANDROID/app/.cxx/RelWithDebInfo/4g5g43v1/arm64-v8a/CMakeFiles/foxsolver.dir
+D:/FoxFW-ANDROID/app/.cxx/RelWithDebInfo/4g5g43v1/arm64-v8a/CMakeFiles/chamcrypto.dir
+D:/FoxFW-ANDROID/app/.cxx/RelWithDebInfo/4g5g43v1/arm64-v8a/CMakeFiles/pandora.dir
+D:/FoxFW-ANDROID/app/.cxx/RelWithDebInfo/4g5g43v1/arm64-v8a/CMakeFiles/foxgpu.dir
+D:/FoxFW-ANDROID/app/.cxx/RelWithDebInfo/4g5g43v1/arm64-v8a/CMakeFiles/edit_cache.dir
+D:/FoxFW-ANDROID/app/.cxx/RelWithDebInfo/4g5g43v1/arm64-v8a/CMakeFiles/rebuild_cache.dir

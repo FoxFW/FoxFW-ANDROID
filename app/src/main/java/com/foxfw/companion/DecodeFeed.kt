@@ -30,6 +30,9 @@ object DecodeFeed {
         while (items.size > 30) items.removeAt(items.size - 1)
     }
 
+    /** Build an Item (for the fob screen) from a frame + its .sub — e.g. opening a saved capture. */
+    fun makeItem(f: ArkeEngine.Frame, subText: String): Item = toItem(f, subText)
+
     private fun toItem(f: ArkeEngine.Frame, subText: String): Item {
         val parts = buildList {
             f.serialHex?.let { add("serial 0x$it") }

@@ -22,9 +22,11 @@ object FlipperRf {
     var txDevice by mutableStateOf(DEV_INT)
 
     private const val DIR = "/ext/apps_data/fox_companion"
-    private const val FAP = "/ext/apps/Fox/fox_subghz_io.fap"
+    private const val FAP = "/ext/apps/System/fox_android_companion.fap"
     private const val TX_SUB = "$DIR/tx.sub"
     private const val RX_SUB = "$DIR/rx.sub"
+    private const val RX_MARK = "$DIR/rx_live.txt"   // FAP writes this the instant recording starts
+    private const val RX_STOP = "$DIR/rx_stop.txt"   // app drops this to end a record early (Stop button)
     private const val STATUS = "$DIR/io_status.txt"
     private const val PROTO_SUB = "/ext/subghz/fox_fob.sub" // Route-B keyed .sub for ProtoPirate (F3)
     private const val SPEC = "$DIR/spec.txt"
@@ -36,6 +38,11 @@ object FlipperRf {
 
     /** Diagnostic breadcrumb from the last rx() call — surfaced in the Decode UI. */
     @Volatile var lastRxDiag: String = ""
+
+    /** Set by the Decode UI's Stop button; rx() polls it to end the record window early (then the
+     *  FAP saves whatever it captured so far). Reset at the start of every rx(). */
+    @Volatile private var stopRx = false
+    fun requestRxStop() { stopRx = true }
 
     val connected: Boolean get() = FlipperTransport.active?.connected == true
 
@@ -63,16 +70,43 @@ object FlipperRf {
         return txResultFromStatus(true, awaitStatus(l))
     }
 
-    /** Capture for ms via CC1101, then pull the captured .sub text back. Null on failure. */
-    suspend fun rx(freqHz: Int, dev: Int, ms: Int, preset: Int = AM650): String? {
+    /**
+     * Capture for ms via CC1101, then pull the captured .sub text back. Null on failure.
+     *
+     * `onStarted` fires the moment the FAP signals recording has actually begun (the RX_MARK file) —
+     * which is ~1-1.5s AFTER appStart, once the app has booted on the Flipper. The UI starts its
+     * capture timer off this, so the visible 4s window lines up with the real record window instead of
+     * the dead FAP-boot lag. On older FW that doesn't write the marker, the wait falls through after a
+     * bounded timeout, so capture still works (just without the precise alignment).
+     */
+    suspend fun rx(freqHz: Int, dev: Int, ms: Int, preset: Int = AM650, rssiDbm: Int = -65,
+                   onStarted: (() -> Unit)? = null): String? {
         val l = FlipperTransport.active ?: run { lastRxDiag = "no link"; return null }
         l.storageMkdir(DIR)
         freeLoader(l)
         l.storageDelete(RX_SUB)
         l.storageDelete(STATUS)
-        if (!l.appStartSafe(FAP, "RX $freqHz $dev $ms $RX_SUB $preset")) { lastRxDiag = "Flipper busy — hold Back to its desktop, then retry"; return null }
-        delay((ms + 1800).toLong())
-        val data = l.storageRead(RX_SUB)
+        l.storageDelete(RX_MARK)   // clear any stale "recording live" marker
+        l.storageDelete(RX_STOP)   // clear any stale early-stop flag
+        stopRx = false
+        // Trailing arg = RSSI squelch (dBm): the FAP only records while the signal beats it, so a
+        // capture isn't filled with noise. Older FW ignores the extra arg (its own default applies).
+        if (!l.appStartSafe(FAP, "RX $freqHz $dev $ms $RX_SUB $preset $rssiDbm")) { lastRxDiag = "Flipper busy — hold Back to its desktop, then retry"; return null }
+        // Wait for the FAP to boot and begin recording (the marker). Bounded so old FW still returns.
+        var waited = 0
+        while (waited < 3000) { if (l.storageStat(RX_MARK)) break; delay(150); waited += 150 }
+        onStarted?.invoke()
+        // The record runs `ms` from here — but the UI's Stop can end it early: when it does, drop the
+        // flag file the FAP polls so it finishes recording and saves whatever it has right away. Then
+        // read it below (the same retry loop covers the FAP's save+copy, early-stop or full-window).
+        var recMs = 0
+        while (recMs < ms) {
+            if (stopRx) { l.storageWrite(RX_STOP, byteArrayOf('x'.code.toByte())); break }
+            delay(100); recMs += 100
+        }
+        var data = l.storageRead(RX_SUB)
+        var tries = 0
+        while ((data == null || data.isEmpty()) && tries < 6) { delay(300); data = l.storageRead(RX_SUB); tries++ }
         if (data == null) {
             val fap = l.storageRead(STATUS)?.let { String(it).trim() } ?: "no response"
             lastRxDiag = "no capture file (FAP: $fap)"

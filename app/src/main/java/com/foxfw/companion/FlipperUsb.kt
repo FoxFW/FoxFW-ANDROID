@@ -66,11 +66,35 @@ class FlipperUsb(private val mgr: UsbManager, private val device: UsbDevice) : F
         val lineCoding = byteArrayOf(0x00, 0xC2.toByte(), 0x01, 0x00, 0x00, 0x00, 0x08)
         c.controlTransfer(0x21, 0x20, 0, ci, lineCoding, lineCoding.size, 200)
 
-        conn = c; epIn = inEp; epOut = outEp; running = true
-        reader = Thread { readLoop() }.also { it.isDaemon = true; it.start() }
+        conn = c; epIn = inEp; epOut = outEp
+        // The CDC endpoint is the Flipper CLI (text), not the RPC channel. Switch it into RPC mode,
+        // then DRAIN the CLI banner + command echo + prompt before the protobuf reader starts — those
+        // text bytes would otherwise be mis-parsed as varint message lengths and swallow every RPC
+        // response (unlike BLE, which has a dedicated RPC characteristic with no CLI in front).
+        Thread.sleep(60)            // let DTR settle so the CLI is listening
+        drainInput(250)             // consume any connect banner/prompt already sitting in the buffer
         writeRaw("start_rpc_session\r".toByteArray())
+        drainInput(600)             // consume the echoed command + the mode-switch, leaving a clean stream
+        reasm.reset()
+        running = true
+        reader = Thread { readLoop() }.also { it.isDaemon = true; it.start() }
         FlipperTransport.usb = this
         return true
+    }
+
+    /** Read and discard CDC input until it goes quiet (~180ms idle) or [maxMs] elapses. Used to clear
+     *  the CLI text that precedes RPC mode so the protobuf stream starts on a frame boundary. */
+    private fun drainInput(maxMs: Int) {
+        val c = conn ?: return
+        val ep = epIn ?: return
+        val buf = ByteArray(ep.maxPacketSize.coerceAtLeast(64))
+        val start = System.currentTimeMillis()
+        var lastData = start
+        while (System.currentTimeMillis() - start < maxMs) {
+            val n = try { c.bulkTransfer(ep, buf, buf.size, 60) } catch (_: Throwable) { -1 }
+            val now = System.currentTimeMillis()
+            if (n > 0) lastData = now else if (now - lastData > 180) break
+        }
     }
 
     fun close() {
@@ -124,6 +148,36 @@ class FlipperUsb(private val mgr: UsbManager, private val device: UsbDevice) : F
     override suspend fun appStart(name: String, args: String): Boolean =
         rpcCall(12000) { id -> Proto.appStart(id, name, args) }?.status == 0
 
+    /** Like [rpcCall] but accumulates every response in a hasNext stream (for KV info replies). */
+    private suspend fun rpcCallStream(timeoutMs: Long, build: (Int) -> ByteArray): List<Proto.RpcResp>? {
+        val id = Proto.allocId()
+        val acc = java.util.Collections.synchronizedList(ArrayList<Proto.RpcResp>())
+        val done = CompletableDeferred<Unit>()
+        pending[id] = { r -> acc.add(r); if (!r.hasNext) { pending.remove(id); done.complete(Unit) } }
+        return try {
+            send(build(id))
+            if (withTimeoutOrNull(timeoutMs) { done.await() } == null) null else ArrayList(acc)
+        } finally { pending.remove(id) }
+    }
+
+    override suspend fun storageStat(path: String): Boolean =
+        rpcCall(8000) { id -> Proto.statRequest(id, path) }?.status == 0
+
+    override suspend fun deviceInfo(): List<Pair<String, String>>? {
+        val rs = rpcCallStream(12000) { id -> Proto.deviceInfoRequest(id) } ?: return null
+        return rs.mapNotNull { r -> r.contentBytes?.takeIf { r.contentField == 33 }?.let { Proto.parseKeyValue(it) } }
+    }
+
+    override suspend fun powerInfo(): List<Pair<String, String>>? {
+        val rs = rpcCallStream(12000) { id -> Proto.powerInfoRequest(id) } ?: return null
+        return rs.mapNotNull { r -> r.contentBytes?.takeIf { r.contentField == 45 }?.let { Proto.parseKeyValue(it) } }
+    }
+
+    override suspend fun getDateTime(): Proto.DateTime? {
+        val r = rpcCall(10000) { id -> Proto.getDateTimeRequest(id) } ?: return null
+        return r.contentBytes?.takeIf { r.contentField == 36 }?.let { Proto.parseDateTime(it) }
+    }
+
     override suspend fun storageMkdir(path: String): Boolean =
         rpcCall(10000) { id -> Proto.mkdirRequest(id, path) }?.status == 0
 
@@ -142,7 +196,7 @@ class FlipperUsb(private val mgr: UsbManager, private val device: UsbDevice) : F
     }
     override suspend fun systemReboot(mode: Int) { send(Proto.rebootRequest(Proto.allocId(), mode)) }
 
-    override suspend fun storageWrite(path: String, data: ByteArray): Boolean {
+    override suspend fun storageWrite(path: String, data: ByteArray, onProgress: ((Long, Long) -> Unit)?): Boolean {
         val id = Proto.allocId()
         val done = CompletableDeferred<Proto.RpcResp>()
         pending[id] = { r -> if (!r.hasNext) { pending.remove(id); done.complete(r) } }
@@ -154,6 +208,7 @@ class FlipperUsb(private val mgr: UsbManager, private val device: UsbDevice) : F
                     val end = minOf(off + chunk, data.size)
                     writeRaw(Proto.writeRequest(id, path, data.copyOfRange(off, end), end < data.size))
                     off = end
+                    onProgress?.invoke(off.toLong(), data.size.toLong())
                 }
             }
             val r = withTimeoutOrNull(30000) { done.await() }

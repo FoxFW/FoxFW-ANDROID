@@ -27,7 +27,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -67,36 +69,71 @@ fun FobScreen(item: DecodeFeed.Item, onBack: () -> Unit) {
         loadErr = fi == null
     }
 
-    val canForge = fob?.hasCipher == true && fob?.route != "replay" && f.serialHex != null
+    // Auto-clear a finished send result (Sent! / Send Failure) after 2s; "Sending…" stays until replaced.
+    LaunchedEffect(status) {
+        if (status.isNotEmpty() && !status.contains("Sending")) {
+            kotlinx.coroutines.delay(2000)
+            status = ""
+        }
+    }
 
-    fun send(code: Int) {
-        val fi = fob ?: return
-        if (busy) return
+    // No rolling counter in the decode => a fixed-code protocol (gates / old fobs): it simply
+    // retransmits the captured signal. A rolling protocol we ALSO hold an on-phone encoder for can
+    // additionally forge the next valid code; a rolling protocol without an encoder is replay-only.
+    val isFixed = f.cnt == null
+    val canEncodeRolling = !isFixed && fob?.hasCipher == true && fob?.route != "replay" && f.serialHex != null
+
+    fun subFreq(sub: String): Int =
+        sub.lineSequence().firstOrNull { it.startsWith("Frequency:") }?.substringAfter(":")?.trim()
+            ?.toIntOrNull() ?: (fob?.freqHz ?: 433920000)
+
+    // Which CC1101 the send went out on, prefixed to the status. In AUTO the FAP uses the external
+    // module if one is attached, else the internal radio — so resolve it the same way from the last
+    // receiver probe (cc1101Ext "ready" => external present). Unknown => plain [AUTO].
+    fun devTag(): String = when (devIdx) {
+        FlipperRf.DEV_INT -> "[INT] "
+        FlipperRf.DEV_EXT -> "[EXT] "
+        else -> when (CompanionCache.rx?.cc1101Ext) {
+            "ready" -> "[AUTO:EXT] "
+            null -> "[AUTO] "
+            else -> "[AUTO:INT] "
+        }
+    }
+
+    // Send the captured signal as-is (the RAW .sub). Available for every protocol.
+    fun sendRaw() {
+        if (fob == null || busy) return
+        val tag = devTag()
         scope.launch {
             busy = true
-            status = "forging…"
-            if (!canForge) {
-                // replay the captured .sub (carries its own freq+preset; FAP honors it)
-                val r = FlipperRf.tx(item.subText, fi.freqHz, devIdx)
-                status = "replay: ${r.label}"
-                busy = false
-                return@launch
-            }
-            val res = withContext(Dispatchers.Default) {
-                ArkeEngine.forge(f.make, f.serialHex ?: "0", counter, code)
-            }
+            status = tag + "Sending…"
+            val r = FlipperRf.tx(item.subText, subFreq(item.subText), devIdx)
+            status = tag + if (r.ok) "Sent!" else "Send Failure — ${r.label}"
+            busy = false
+        }
+    }
+
+    // Generate + send the next valid rolling code — only when we hold the cipher on the phone.
+    fun sendRolling(code: Int) {
+        val fi = fob ?: return
+        val serial = f.serialHex ?: return   // only reachable when canEncodeRolling (serial present)
+        if (busy) return
+        val tag = devTag()
+        scope.launch {
+            busy = true
+            status = tag + "Sending…"
+            val res = withContext(Dispatchers.Default) { ArkeEngine.forge(f.make, serial, counter, code) }
             when (res) {
                 is ForgeResult.Raw -> {
                     val r = FlipperRf.tx(res.sub, fi.freqHz, devIdx, presetIdx(fi.preset))
-                    status = r.label
-                    if (r is TxResult.Ok) counter += 1 // advance only on a CONFIRMED TX (not Launched)
+                    status = tag + if (r.ok) "Sent!" else "Send Failure — ${r.label}"
+                    if (r is TxResult.Ok) counter += 1 // advance only on a CONFIRMED TX
                 }
                 is ForgeResult.Protocol -> {
-                    // Route B parks a .sub for ProtoPirate (no TX from here) — don't auto-advance
                     val r = FlipperRf.txProtocol(res.sub)
-                    status = r.label
+                    status = tag + r.label
                 }
-                is ForgeResult.Err -> status = "forge: ${res.msg}"
+                is ForgeResult.Err -> status = tag + "Send Failure — ${res.msg}"
             }
             busy = false
         }
@@ -111,15 +148,20 @@ fun FobScreen(item: DecodeFeed.Item, onBack: () -> Unit) {
             modifier = Modifier.clickable { onBack() },
         )
         Text(f.make, color = Fox.fg, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
-        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            f.serialHex?.let { Text("serial 0x$it", color = Fox.muted, fontFamily = FoxMono, fontSize = 11.sp) }
-            fob?.let { Pill(routeLabel(it, canForge)) }
-        }
+        f.serialHex?.let { Text("serial 0x$it", color = Fox.muted, fontFamily = FoxMono, fontSize = 11.sp) }
 
         when {
             loadErr -> Text("Fob engine unavailable.", color = Fox.faint, fontFamily = FoxMono, fontSize = 11.sp)
             fob == null -> Text("loading…", color = Fox.faint, fontFamily = FoxMono, fontSize = 11.sp)
             else -> {
+                Text(
+                    when {
+                        isFixed -> "Fixed Code Protocol — transmits the captured signal."
+                        canEncodeRolling -> "Rolling code — send the next valid code, or replay the capture."
+                        else -> "Rolling code — no on-phone encoder; replay the capture only."
+                    },
+                    color = Fox.muted, fontFamily = FoxMono, fontSize = 11.sp,
+                )
                 // CC1101 selector
                 Eyebrow("CC1101")
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -127,8 +169,8 @@ fun FobScreen(item: DecodeFeed.Item, onBack: () -> Unit) {
                         .forEach { (lbl, d) -> Chip(lbl, d == devIdx, Modifier.weight(1f)) { devIdx = d } }
                 }
 
-                if (canForge) {
-                    // live counter + manual bump (re-sync if the car rolled ahead)
+                if (canEncodeRolling) {
+                    // live counter + manual bump (re-sync if the receiver rolled ahead)
                     Eyebrow("Counter")
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                         Text("0x%X".format(counter), color = Fox.fg, fontFamily = FoxMono, fontSize = 18.sp)
@@ -136,24 +178,13 @@ fun FobScreen(item: DecodeFeed.Item, onBack: () -> Unit) {
                         Chip("−1", false) { if (counter > 0) counter -= 1 }
                         Chip("+1", false) { counter += 1 }
                     }
-                    Eyebrow("Buttons — forge next valid code & TX")
-                    fob!!.buttons.chunked(2).forEach { rowBtns ->
-                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            rowBtns.forEach { b ->
-                                PadButton(b.label, Modifier.weight(1f), enabled = !busy) { send(b.code) }
-                            }
-                            if (rowBtns.size == 1) Spacer(Modifier.weight(1f))
-                        }
-                    }
-                } else {
-                    Text(
-                        "Replay only — this protocol's cipher isn't on the phone, so a re-sent capture " +
-                            "won't open a rolling receiver (fixed-code gates/old fobs still work).",
-                        color = Fox.faint, fontFamily = FoxMono, fontSize = 11.sp,
-                    )
-                    PadButton(if (busy) "sending…" else "Replay capture", Modifier.fillMaxWidth(), enabled = !busy) { send(0) }
                 }
-                if (status.isNotEmpty()) Text(status, color = Fox.live, fontFamily = FoxMono, fontSize = 11.sp)
+                // Every protocol gets the D-pad: centre = RAW replay; the directions carry the fob's
+                // buttons (rolling generate+TX) where it has them, else inert arrows.
+                Eyebrow(if (canEncodeRolling) "Buttons generate next valid code & TX" else "Send", center = canEncodeRolling)
+                FobDpad(fob!!.buttons, canEncodeRolling, busy, onSend = { sendRolling(it) }, onRaw = { sendRaw() })
+                if (status.isNotEmpty()) Text(status, color = Fox.live, fontFamily = FoxMono, fontSize = 11.sp,
+                    modifier = Modifier.fillMaxWidth(), textAlign = androidx.compose.ui.text.style.TextAlign.Center)
                 if (!FlipperRf.connected) {
                     Text("Flipper not connected — TX will report 'not connected'.",
                         color = Fox.faint, fontFamily = FoxMono, fontSize = 10.sp)
@@ -163,24 +194,63 @@ fun FobScreen(item: DecodeFeed.Item, onBack: () -> Unit) {
     }
 }
 
-private fun routeLabel(fi: FobInfo, canForge: Boolean): String = when {
-    !canForge -> "REPLAY"
-    fi.route == "B" -> "FORGE · via ProtoPirate"
-    else -> "FORGE"
+/** The fob D-pad — shown on every protocol. Fixed positions by function: top Lock, bottom Unlock,
+ *  left Trunk, right Panic; the centre always replays the RAW capture. A position the protocol doesn't
+ *  have (or any fixed-code page) shows an inert arrow in the same amber box. Rolling buttons that don't
+ *  map to one of the four (e.g. "Remote") stack underneath. `canSend` gates the rolling directions. */
+@Composable
+private fun FobDpad(buttons: List<FobButton>, canSend: Boolean, busy: Boolean, onSend: (Int) -> Unit, onRaw: () -> Unit) {
+    val top = if (canSend) buttons.firstOrNull { it.label.equals("Lock", true) } else null
+    val bottom = if (canSend) buttons.firstOrNull { it.label.equals("Unlock", true) } else null
+    val left = if (canSend) buttons.firstOrNull { it.label.contains("Trunk", true) } else null
+    val right = if (canSend) buttons.firstOrNull { it.label.contains("Panic", true) } else null
+    val used = listOfNotNull(top, bottom, left, right).map { it.code }.toSet()
+    val extras = if (canSend) buttons.filter { it.code !in used } else emptyList()
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Spacer(Modifier.weight(1f)); DpadCell(top, 0f, busy, Modifier.weight(1f), onSend); Spacer(Modifier.weight(1f))
+        }
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            DpadCell(left, -90f, busy, Modifier.weight(1f), onSend)
+            PadButton("RAW", Modifier.weight(1f), enabled = !busy) { onRaw() }
+            DpadCell(right, 90f, busy, Modifier.weight(1f), onSend)
+        }
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Spacer(Modifier.weight(1f)); DpadCell(bottom, 180f, busy, Modifier.weight(1f), onSend); Spacer(Modifier.weight(1f))
+        }
+        extras.chunked(2).forEach { rowBtns ->
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                rowBtns.forEach { b -> PadButton(b.label, Modifier.weight(1f), enabled = !busy) { onSend(b.code) } }
+                if (rowBtns.size == 1) Spacer(Modifier.weight(1f))
+            }
+        }
+    }
+}
+
+/** One directional cell: a live fob button, or an inert arrow slot (same amber box, grey glyph). */
+@Composable
+private fun DpadCell(b: FobButton?, rot: Float, busy: Boolean, modifier: Modifier = Modifier, onSend: (Int) -> Unit) {
+    if (b == null) {
+        // Inert slot: the whole amber button is faded out (disabled look), keeping the orange but
+        // dimming it, with the arrow in the same dark ink as the live labels — no clashing grey.
+        Box(
+            modifier.height(54.dp).clip(RoundedCornerShape(12.dp)).alpha(0.4f).background(Fox.amber),
+            contentAlignment = Alignment.Center,
+        ) {
+            // one triangle rotated per direction, so all four are identical in size/shape
+            Text("▲", color = Fox.amberInk, fontFamily = FoxMono,
+                fontSize = 15.sp, fontWeight = FontWeight.Bold, modifier = Modifier.rotate(rot))
+        }
+    } else {
+        PadButton(b.label, modifier, enabled = !busy) { onSend(b.code) }
+    }
 }
 
 @Composable
-private fun Pill(text: String) {
-    Box(
-        Modifier.clip(RoundedCornerShape(8.dp)).background(Fox.amberDim)
-            .border(1.dp, Fox.amber.copy(alpha = 0.5f), RoundedCornerShape(8.dp))
-            .padding(horizontal = 8.dp, vertical = 2.dp),
-    ) { Text(text, color = Fox.amber, fontFamily = FoxMono, fontSize = 9.sp, fontWeight = FontWeight.SemiBold) }
-}
-
-@Composable
-private fun Eyebrow(text: String) =
-    Text(text.uppercase(), color = Fox.muted, fontFamily = FoxMono, fontSize = 10.sp, letterSpacing = 1.sp)
+private fun Eyebrow(text: String, center: Boolean = false) =
+    Text(text.uppercase(), color = Fox.muted, fontFamily = FoxMono, fontSize = 10.sp, letterSpacing = 1.sp,
+        modifier = if (center) Modifier.fillMaxWidth() else Modifier,
+        textAlign = if (center) androidx.compose.ui.text.style.TextAlign.Center else null)
 
 @Composable
 private fun Chip(label: String, selected: Boolean, modifier: Modifier = Modifier, onClick: () -> Unit) {

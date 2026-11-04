@@ -73,8 +73,6 @@ fun BleGattScreen(onClose: () -> Unit) {
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(Icons.Filled.ArrowBack, "Back", tint = Fox.fg, modifier = Modifier.size(22.dp).clickable { onClose() })
-            Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f)) {
                 Text("BLE Explorer", color = Fox.fg, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
                 Text("GATT · SCAN · READ · SUBSCRIBE", color = Fox.muted, fontFamily = FoxMono, fontSize = 10.sp, letterSpacing = 1.sp)

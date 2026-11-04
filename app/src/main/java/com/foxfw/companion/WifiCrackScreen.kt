@@ -49,7 +49,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * On-phone WPA PMKID handshake cracker. Paste a hashcat-22000 `WPA*01*...` line (from a BFFB/Marauder
+ * On-phone WPA PMKID handshake cracker. Paste a hashcat-22000 `WPA*01*...` line (from a BFFB/Esp32
  * capture, or JARVIS's hcxpcapngtool), pick a wordlist, and dictionary-crack it on the phone. Runs on
  * [CpuCrackBackend] today; the GPU (OpenCL) backend plugs in behind [CrackBackend] and is picked
  * automatically when available.
@@ -58,9 +58,10 @@ import kotlinx.coroutines.withContext
 fun WifiCrackScreen(onClose: () -> Unit) {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
+    @Suppress("DEPRECATION") // LocalClipboardManager deprecated for LocalClipboard (suspend API); kept simple
     val clip = LocalClipboardManager.current
 
-    // Pre-fill from a handshake the Marauder screen auto-shipped here, if any.
+    // Pre-fill from a handshake the Esp32 screen auto-shipped here, if any.
     var hc by remember { mutableStateOf(CrackInbox.consume() ?: "") }
     var words by remember { mutableStateOf<List<String>>(emptyList()) }
     var wordlistName by remember { mutableStateOf("") }
@@ -72,7 +73,7 @@ fun WifiCrackScreen(onClose: () -> Unit) {
     var result by remember { mutableStateOf("") }
     var status by remember {
         mutableStateOf(
-            if (hc.isNotBlank()) "Loaded a captured handshake from Marauder — pick a wordlist, crack."
+            if (hc.isNotBlank()) "Loaded a captured handshake from Esp32 — pick a wordlist, crack."
             else "Paste a WPA*01 (PMKID) or WPA*02 (handshake) line, pick a wordlist, crack.",
         )
     }
@@ -174,12 +175,6 @@ fun WifiCrackScreen(onClose: () -> Unit) {
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Box(
-                Modifier.size(34.dp).clip(RoundedCornerShape(10.dp))
-                    .border(1.dp, Fox.line, RoundedCornerShape(10.dp)).clickable { onClose() },
-                contentAlignment = Alignment.Center,
-            ) { Icon(Icons.Filled.ArrowBack, null, tint = Fox.fg, modifier = Modifier.size(18.dp)) }
-            Spacer(Modifier.width(12.dp))
             Column {
                 Text("Handshake Crack", color = Fox.fg, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
                 Eyebrow("WPA2 PMKID + EAPOL · on-phone")

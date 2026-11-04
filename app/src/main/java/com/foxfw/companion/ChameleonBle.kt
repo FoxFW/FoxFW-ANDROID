@@ -98,6 +98,7 @@ class ChameleonBle(private val app: Context) {
         }
     }
 
+    @Suppress("DEPRECATION") // connectGatt overloads deprecated; replacements need newer APIs
     private fun connectTo(dev: BluetoothDevice, name: String) {
         conn = Conn.CONNECTING; deviceName = name
         gatt = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
@@ -207,6 +208,7 @@ class ChameleonBle(private val app: Context) {
 
     // ---- auto-pairing (fixed passkey 123456 on pairing-enabled units) ----
     private val pairingReceiver = object : BroadcastReceiver() {
+        @Suppress("DEPRECATION") // BluetoothDevice.setPin has no public modern replacement
         override fun onReceive(ctx: Context, intent: Intent) {
             if (intent.action != BluetoothDevice.ACTION_PAIRING_REQUEST) return
             val dev: BluetoothDevice? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)

@@ -170,6 +170,7 @@ class FlipperBle(private val app: Context) : FlipperLink {
         }
     }
 
+    @Suppress("DEPRECATION") // connectGatt overloads deprecated; replacements need newer APIs
     private fun connectTo(dev: BluetoothDevice, name: String) {
         conn = Conn.CONNECTING; deviceName = name
         gatt = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
@@ -519,7 +520,7 @@ class FlipperBle(private val app: Context) : FlipperLink {
     }
     override suspend fun systemReboot(mode: Int) { reboot(mode) }
 
-    override suspend fun storageWrite(path: String, data: ByteArray): Boolean {
+    override suspend fun storageWrite(path: String, data: ByteArray, onProgress: ((Long, Long) -> Unit)?): Boolean {
         val id = Proto.allocId()
         val done = kotlinx.coroutines.CompletableDeferred<Proto.RpcResp>()
         pendingRpc[id] = { r -> if (!r.hasNext) { pendingRpc.remove(id); done.complete(r) } }
@@ -532,6 +533,7 @@ class FlipperBle(private val app: Context) : FlipperLink {
                 val end = minOf(off + chunk, data.size)
                 enqueueRpc(Proto.writeRequest(id, path, data.copyOfRange(off, end), end < data.size))
                 off = end
+                onProgress?.invoke(off.toLong(), data.size.toLong())
             }
             // Scale the ceiling with size: ~128-B frames paced 14–30 ms + periodic flow-control
             // pauses ≈ a few KB/s, so a fixed 30 s silently failed big writes. Completes early on
@@ -576,7 +578,7 @@ class FlipperBle(private val app: Context) : FlipperLink {
     }
 
     // ---- stat (existence check) ----
-    suspend fun storageStat(path: String): Boolean = rpcCall(8000) { id -> Proto.statRequest(id, path) }?.status == 0
+    override suspend fun storageStat(path: String): Boolean = rpcCall(8000) { id -> Proto.statRequest(id, path) }?.status == 0
 
     /** List a directory on the Flipper SD. Null = error (bad path / disconnected); empty list = empty dir.
      *  Dirs sorted first, then files, both A→Z. */
@@ -592,9 +594,9 @@ class FlipperBle(private val app: Context) : FlipperLink {
         val rs = rpcCallStream(12000, build) ?: return null
         return rs.mapNotNull { r -> r.contentBytes?.takeIf { r.contentField == field }?.let { Proto.parseKeyValue(it) } }
     }
-    suspend fun deviceInfo(): List<Pair<String, String>>? = kvInfo(33) { id -> Proto.deviceInfoRequest(id) }
-    suspend fun powerInfo(): List<Pair<String, String>>? = kvInfo(45) { id -> Proto.powerInfoRequest(id) }
-    suspend fun getDateTime(): Proto.DateTime? {
+    override suspend fun deviceInfo(): List<Pair<String, String>>? = kvInfo(33) { id -> Proto.deviceInfoRequest(id) }
+    override suspend fun powerInfo(): List<Pair<String, String>>? = kvInfo(45) { id -> Proto.powerInfoRequest(id) }
+    override suspend fun getDateTime(): Proto.DateTime? {
         val r = rpcCall(10000) { id -> Proto.getDateTimeRequest(id) } ?: return null
         return r.contentBytes?.takeIf { r.contentField == 36 }?.let { Proto.parseDateTime(it) }
     }

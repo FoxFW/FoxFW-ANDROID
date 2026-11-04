@@ -6,10 +6,10 @@ import org.json.JSONObject
 
 /** Kotlin bridge to the arke automotive/gate decode+clone engine (runs in Chaquopy Python). */
 object ArkeEngine {
-    /** Distinct Sub-GHz protocols in the FoxFW 2.1 firmware registry (_protomap.json = 154 entries;
+    /** Distinct Sub-GHz protocols in the FoxFW 2.1 firmware registry (_protomap.json = 155 entries;
      *  150 decodable). Shown on the dashboard as "Protocols" — the breadth the Flipper can decode.
      *  decoderCount() below is the on-phone arke RAW-decode classes (a subset), used by the crack tool. */
-    const val PROTOCOL_COUNT = 154
+    const val PROTOCOL_COUNT = 155
     data class Frame(
         val make: String,
         val serialHex: String?,
@@ -126,7 +126,7 @@ object ArkeEngine {
                     out.add(
                         Frame(
                             make = o.optString("make", "?"),
-                            serialHex = o.optString("serial_hex", o.opt("serial")?.toString()),
+                            serialHex = o.optString("serial_hex", o.opt("serial")?.toString() ?: ""),
                             cnt = if (o.isNull("cnt")) null else o.optLong("cnt"),
                             btn = if (o.isNull("btn")) null else o.optInt("btn"),
                             btnName = if (o.isNull("btn_name")) null else o.optString("btn_name"),

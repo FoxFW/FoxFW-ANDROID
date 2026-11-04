@@ -52,12 +52,6 @@ fun PsaScreen(onClose: () -> Unit) {
         verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Box(
-                Modifier.size(34.dp).clip(RoundedCornerShape(10.dp))
-                    .border(1.dp, Fox.line, RoundedCornerShape(10.dp)).clickable { onClose() },
-                contentAlignment = Alignment.Center,
-            ) { Icon(Icons.Filled.ArrowBack, null, tint = Fox.fg, modifier = Modifier.size(18.dp)) }
-            Spacer(Modifier.width(12.dp))
             Column {
                 Text("PSA Offload", color = Fox.fg, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
                 Eyebrow("TEA BRUTE · OVER BLE")

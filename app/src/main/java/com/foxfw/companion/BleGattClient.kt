@@ -103,6 +103,7 @@ class BleGattClient(private val app: Context) {
     }
 
     // ---- connection ----
+    @Suppress("DEPRECATION") // connectGatt overloads are deprecated but the replacements need newer APIs
     fun connect(address: String) {
         val ad = adapter ?: return
         stopScan()

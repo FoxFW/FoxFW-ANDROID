@@ -31,6 +31,7 @@ class WifiBandScanner(context: Context) {
     fun wifiEnabled(): Boolean = try { wifi.isWifiEnabled } catch (e: Exception) { false }
 
     @SuppressLint("MissingPermission")
+    @Suppress("DEPRECATION") // ScanResult.SSID deprecated in API 33; kept for broad device support
     fun currentAps(): List<BandScan.Ap> {
         val out = ArrayList<BandScan.Ap>()
         try {

@@ -40,15 +40,26 @@ object UsbLink {
         }
     }
 
+    @Volatile private var opening = false
+
     private fun open(mgr: UsbManager, dev: UsbDevice) {
+        if (opening || FlipperTransport.usb != null) return
+        opening = true
         val u = FlipperUsb(mgr, dev)
-        if (u.open()) usbConnected = true else u.close()
+        // open() blocks ~1s entering RPC mode (drains the Flipper CLI banner first), so it must run
+        // off the main thread; usbConnected flips true only once the RPC session is actually live.
+        Thread {
+            try { if (u.open()) usbConnected = true else u.close() } finally { opening = false }
+        }.also { it.isDaemon = true }.start()
     }
 
     private fun detach() {
         (FlipperTransport.usb as? FlipperUsb)?.close()
         usbConnected = false
     }
+
+    /** User-initiated USB disconnect (closes the CDC link). */
+    fun disconnect() = detach()
 
     /** Register attach/detach/permission receivers; caller unregisters the returned receiver. */
     fun register(ctx: Context): BroadcastReceiver {

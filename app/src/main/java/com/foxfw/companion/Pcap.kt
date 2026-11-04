@@ -1,11 +1,11 @@
 package com.foxfw.companion
 
 /**
- * Minimal .pcap → hashcat-22000 extractor, on-phone. Turns a capture (e.g. a Marauder `sniffpwn`
+ * Minimal .pcap → hashcat-22000 extractor, on-phone. Turns a capture (e.g. a Esp32 `sniffpwn`
  * .pcap off the board's SD) into crackable `WPA*01` (PMKID) and `WPA*02` (4-way EAPOL) lines, so a
  * captured handshake can be cracked here without a PC/hcxpcapngtool.
  *
- * Handles classic pcap (LE or BE magic) with link types 105 (raw 802.11 — what Marauder writes),
+ * Handles classic pcap (LE or BE magic) with link types 105 (raw 802.11 — what Esp32 writes),
  * 119 (PRISM, 144-byte header) and 127 (radiotap). Parses beacons/probe-resps for SSID, and EAPOL-Key
  * frames: M1 gives the ANonce (+ any RSN PMKID KDE), M2 gives the SNonce + MIC + the EAPOL frame.
  */

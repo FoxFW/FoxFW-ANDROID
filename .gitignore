@@ -1,11 +1,12 @@
 # ---- Gradle / Android build output ----
-.gradle/
+#.gradle/
 build/
-app/build/
-captures/
-.cxx/
-*.apk
-*.aab
+#app/build/
+app/build/outputs/apk/debug
+#captures/
+#.cxx/
+#*.apk
+#*.aab
 
 # ---- Machine-specific config (never commit; each machine has its own) ----
 # local.properties holds sdk.dir for THIS machine. Android Studio regenerates it
@@ -17,6 +18,8 @@ local.properties
 *.jks
 keystore.properties
 signing.properties
+# local build helper — contains the signing password, so it stays out of git
+compile_apk.bat
 
 # ---- IDE / OS noise ----
 .idea/

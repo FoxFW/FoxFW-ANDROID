@@ -1,8 +1,20 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.plugin.compose")
     id("com.chaquo.python")
 }
+
+// Optional local release-signing config — NEVER committed (git-ignored; see keystore.properties.sample).
+// Contributors need none of this: with no keystore.properties present, release builds fall back to the
+// debug key so the app still builds and installs. Only the official signed release uses a real keystore.
+val keystorePropsFile = rootProject.file("keystore.properties")
+val keystoreProps = Properties().apply {
+    if (keystorePropsFile.exists()) keystorePropsFile.inputStream().use { load(it) }
+}
+val releaseKeystore = keystoreProps.getProperty("storeFile")?.let { rootProject.file(it) }
+val hasReleaseKeystore = releaseKeystore?.exists() == true
 
 android {
     namespace = "com.foxfw.companion"
@@ -27,11 +39,14 @@ android {
     }
 
     signingConfigs {
-        create("foxfw") {
-            storeFile = file("C:/Users/stone/android-build-tools/foxfw-release.keystore")
-            storePassword = "foxfw2025"
-            keyAlias = "foxfw"
-            keyPassword = "foxfw2025"
+        // Only created when a local keystore.properties points at a real keystore. No secrets here.
+        if (hasReleaseKeystore) {
+            create("foxfw") {
+                storeFile = releaseKeystore
+                storePassword = keystoreProps.getProperty("storePassword")
+                keyAlias = keystoreProps.getProperty("keyAlias")
+                keyPassword = keystoreProps.getProperty("keyPassword")
+            }
         }
     }
     buildTypes {
@@ -41,7 +56,10 @@ android {
         }
         release {
             isMinifyEnabled = false
-            signingConfig = signingConfigs.getByName("foxfw")
+            // Official release uses the foxfw key when keystore.properties is present; otherwise fall
+            // back to the debug key so anyone can build/install a release without any keystore.
+            signingConfig = if (hasReleaseKeystore) signingConfigs.getByName("foxfw")
+                            else signingConfigs.getByName("debug")
             // Distributed build: private-only tiles are hidden.
             buildConfigField("boolean", "PRIVATE_BUILD", "false")
         }
@@ -57,7 +75,10 @@ android {
 
 chaquopy {
     defaultConfig {
-        buildPython("C:/Users/stone/radioconda/python.exe")
+        // Optional: set foxfw.buildPython in a local (git-ignored) gradle.properties, or pass
+        // -Pfoxfw.buildPython=<path>. If unset, Chaquopy auto-detects python on PATH; if none is
+        // found the build still succeeds (raw .py is bundled, only the .pyc precompile is skipped).
+        (project.findProperty("foxfw.buildPython") as String?)?.let { buildPython(it) }
         pip { }  // arke engine is pure-Python, no deps
     }
     sourceSets {

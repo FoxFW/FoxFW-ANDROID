@@ -11,7 +11,7 @@ object FlipperTagBackend : TagBackend {
     override val name = "Flipper"
     private val ble get() = FoxApplication.instance.ble
     private const val DIR = "/ext/apps_data/fox_companion"
-    private const val FAP = "/ext/apps/Fox/fox_nfc_io.fap"
+    private const val FAP = "/ext/apps/System/fox_android_companion.fap"
     private const val MAKE = "$DIR/make.nfc"
     private const val READOUT = "$DIR/read.nfc"
     private const val MAKE_LF = "$DIR/make.rfid"

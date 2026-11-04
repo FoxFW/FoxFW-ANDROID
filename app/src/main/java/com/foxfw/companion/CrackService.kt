@@ -41,8 +41,8 @@ class CrackService : Service() {
 
         val uid = intent?.getLongExtra(EX_UID, 0L) ?: 0L
         val btn = intent?.getIntArrayExtra(EX_BTN) ?: return stopNow()
-        val ctrl = intent?.getIntArrayExtra(EX_CTRL) ?: return stopNow()
-        val hop = intent?.getLongArrayExtra(EX_HOP) ?: return stopNow()
+        val ctrl = intent.getIntArrayExtra(EX_CTRL) ?: return stopNow()
+        val hop = intent.getLongArrayExtra(EX_HOP) ?: return stopNow()
         // all three capture arrays must line up — later code indexes btn[i]/ctrl[i] by hop's length
         if (btn.size < 2 || ctrl.size != btn.size || hop.size != btn.size) return stopNow()
 

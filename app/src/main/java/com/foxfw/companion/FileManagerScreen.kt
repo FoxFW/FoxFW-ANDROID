@@ -25,7 +25,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.CreateNewFolder
 import androidx.compose.material.icons.filled.Folder
-import androidx.compose.material.icons.filled.InsertDriveFile
+import androidx.compose.material.icons.automirrored.filled.InsertDriveFile
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Upload
 import androidx.compose.material3.AlertDialog
@@ -183,8 +183,6 @@ fun FileManagerScreen(onClose: () -> Unit) {
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            IconBox(Icons.Filled.ArrowBack) { onClose() }
-            Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f)) {
                 Text("Files", color = Fox.fg, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
                 Eyebrow("FLIPPER SD BROWSER")
@@ -209,7 +207,7 @@ fun FileManagerScreen(onClose: () -> Unit) {
                 Row(Modifier.fillMaxWidth()
                     .clickable { if (e.isDir) open(joinPath(cur, e.name)) else download(e) }
                     .padding(vertical = 7.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Icon(if (e.isDir) Icons.Filled.Folder else Icons.Filled.InsertDriveFile, null,
+                    Icon(if (e.isDir) Icons.Filled.Folder else Icons.AutoMirrored.Filled.InsertDriveFile, null,
                         tint = if (e.isDir) Fox.amber else Fox.muted, modifier = Modifier.size(16.dp))
                     Spacer(Modifier.width(9.dp))
                     Column(Modifier.weight(1f)) {

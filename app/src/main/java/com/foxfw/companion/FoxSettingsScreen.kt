@@ -17,7 +17,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -54,8 +54,13 @@ import kotlinx.coroutines.withContext
 
 private enum class FoxPhase { LOADING, UNSUPPORTED, DISCONNECTED, LOADED, LOAD_FAILED }
 
+/** Shared trigger for the Settings header's refresh button — incrementing it reloads the live config. */
+object FoxSettingsReload { var trigger by mutableStateOf(0) }
+
+/** The FoxFW settings sections, inlined into the Settings page. Auto-saves a short debounce after the last
+ *  edit (no Apply button); reports save activity via [onSaving] so the page can show the "Saving" pill. */
 @Composable
-fun FoxSettingsScreen(onClose: () -> Unit) {
+fun FoxSettingsContent(onSaving: (Boolean) -> Unit) {
     val scope = androidx.compose.runtime.rememberCoroutineScope()
     val cfg = remember { FoxSettings.Cfg() }
     var rev by remember { mutableIntStateOf(0) }
@@ -63,10 +68,21 @@ fun FoxSettingsScreen(onClose: () -> Unit) {
     var status by remember { mutableStateOf("") }
     var busy by remember { mutableStateOf(false) }
     var originalName by remember { mutableStateOf("") }
-    fun edit(b: () -> Unit) { b(); rev++ }
+    var saveVersion by remember { mutableIntStateOf(0) }
+    fun edit(b: () -> Unit) { b(); rev++; if (phase == FoxPhase.LOADED) saveVersion++ }
 
-    fun load() {
+    fun load(force: Boolean = false) {
         if (!FlipperRf.connected) { phase = FoxPhase.DISCONNECTED; return }
+        // Session cache: re-opening this page uses the last read instead of re-launching the daemon
+        // (which flashes the Flipper's loader wheel). "Reload" forces a fresh read.
+        if (!force) {
+            val cached = CompanionCache.settings
+            if (cached != null) {
+                copyInto(cfg, cached); originalName = cfg.deviceName; rev++
+                phase = FoxPhase.LOADED; status = "loaded"
+                return
+            }
+        }
         phase = FoxPhase.LOADING; status = "checking firmware…"; busy = true
         scope.launch {
             val ok = withContext(Dispatchers.IO) {
@@ -84,57 +100,37 @@ fun FoxSettingsScreen(onClose: () -> Unit) {
                     // push blank defaults over the Flipper's real settings. Stay read-only; user Reloads.
                     else { phase = FoxPhase.LOAD_FAILED; status = "read failed — put the Flipper on its home screen, then Reload." }
                 }
-                else -> { copyInto(cfg, ok); originalName = cfg.deviceName; rev++; phase = FoxPhase.LOADED; status = "loaded" }
+                else -> {
+                    copyInto(cfg, ok); CompanionCache.settings = ok
+                    originalName = cfg.deviceName; rev++; phase = FoxPhase.LOADED; status = "loaded"
+                }
             }
         }
     }
 
-    fun apply() {
-        if (phase != FoxPhase.LOADED) return
-        busy = true; status = "applying…"
-        scope.launch {
-            val ok = withContext(Dispatchers.IO) { FoxSettings.write(cfg) }
-            busy = false
-            status = if (ok) {
-                if (cfg.deviceName != originalName) { originalName = cfg.deviceName; "applied · name change needs a reboot" }
-                else "applied"
-            } else "apply timed out — is the Flipper on its home screen?"
+    // Reload on first open and whenever the Settings header refresh button is tapped.
+    androidx.compose.runtime.LaunchedEffect(FoxSettingsReload.trigger) { load(force = FoxSettingsReload.trigger > 0) }
+    // Auto-save: a short debounce after the last edit, then write and flag "saving" so the page shows the
+    // pill (~2s). Rapid edits keep resetting the debounce, so we write once the changes settle.
+    androidx.compose.runtime.LaunchedEffect(saveVersion) {
+        if (saveVersion == 0 || phase != FoxPhase.LOADED) return@LaunchedEffect
+        kotlinx.coroutines.delay(650)
+        onSaving(true)
+        try {
+            val t0 = System.currentTimeMillis()
+            // Hard 3s cap: if the device write wedges it can't pin the pill up forever.
+            val ok = kotlinx.coroutines.withTimeoutOrNull(3000) { withContext(Dispatchers.IO) { FoxSettings.write(cfg) } } ?: false
+            if (ok) { CompanionCache.settings = FoxSettings.Cfg().also { copyInto(it, cfg) }; if (cfg.deviceName != originalName) originalName = cfg.deviceName }
+            // Linger briefly so the pill is readable, but never let total visible time exceed 3s.
+            val hold = (1700L).coerceAtMost((3000L - (System.currentTimeMillis() - t0)).coerceAtLeast(0L))
+            if (hold > 0) kotlinx.coroutines.delay(hold)
+        } finally {
+            onSaving(false)
         }
     }
-
-    androidx.compose.runtime.LaunchedEffect(Unit) { load() }
     val r = rev   // read once so field edits recompose the whole form
 
-    Column(Modifier.fillMaxWidth().background(Fox.page).verticalScroll(rememberScrollState()).padding(16.dp)) {
-        // header
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Box(Modifier.size(38.dp).clip(RoundedCornerShape(10.dp)).background(Fox.surface)
-                .border(1.dp, Fox.line, RoundedCornerShape(10.dp)).clickable { onClose() },
-                contentAlignment = Alignment.Center) {
-                Icon(Icons.Filled.ArrowBack, "back", tint = Fox.fg, modifier = Modifier.size(18.dp))
-            }
-            Spacer(Modifier.width(12.dp))
-            Column(Modifier.weight(1f)) {
-                Eyebrow("FULL SETTINGS · OVER BLE/USB")
-                Text("FoxFW Settings", color = Fox.fg, fontFamily = FoxMono, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-            }
-        }
-        Spacer(Modifier.height(12.dp))
-
-        // status + actions
-        FoxCard(Modifier.fillMaxWidth()) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(if (busy) "• working…" else "• ${status.ifEmpty { "ready" }}",
-                    color = if (phase == FoxPhase.UNSUPPORTED) Fox.warn else Fox.live, fontFamily = FoxMono, fontSize = 12.sp,
-                    modifier = Modifier.weight(1f))
-                ActionChip("Reload", enabled = !busy) { load() }
-                Spacer(Modifier.width(8.dp))
-                ActionChip("Apply", accent = true, enabled = !busy && phase == FoxPhase.LOADED) { apply() }
-            }
-        }
-        Spacer(Modifier.height(12.dp))
-
-        when (phase) {
+    when (phase) {
             FoxPhase.DISCONNECTED -> Note("Connect the Flipper (Remote Screen) to edit device settings.")
             FoxPhase.LOAD_FAILED -> Note("Couldn't read settings — put the Flipper on its home screen and tap Reload. Your device settings were left untouched.")
             FoxPhase.UNSUPPORTED -> FoxCard(Modifier.fillMaxWidth()) {
@@ -218,8 +214,6 @@ fun FoxSettingsScreen(onClose: () -> Unit) {
                 }
             }
         }
-        Spacer(Modifier.height(24.dp))
-    }
 }
 
 private fun copyInto(dst: FoxSettings.Cfg, src: FoxSettings.Cfg) {

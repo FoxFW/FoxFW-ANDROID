@@ -16,7 +16,7 @@ object FoxSettings {
     const val REQ = "$DIR/request.flag"
     const val PEND = "$DIR/pending.txt"
     const val CUR = "$DIR/current.txt"
-    const val IMPORTER = "/ext/apps/System/fox_import_settings.fap"
+    const val IMPORTER = "/ext/apps/System/fox_android_companion.fap"
 
     // Dropdown option labels (exact to the reference design).
     val BACKLIGHT_OFF = listOf("1s", "5s", "10s", "15s", "30s", "60s")
@@ -66,33 +66,48 @@ object FoxSettings {
         var deviceName = ""
     }
 
-    private val ble get() = FoxApplication.instance.ble
+    private val link get() = FlipperTransport.active
 
-    suspend fun supported(): Boolean = ble.storageStat(IMPORTER)
+    suspend fun supported(): Boolean = link?.storageStat(IMPORTER) == true
 
     /** Returns the current device settings, or null on timeout/failure. */
     suspend fun read(): Cfg? {
-        ble.storageMkdir(DIR)
-        ble.storageDelete(CUR, recursive = false)
-        if (!ble.storageWrite(REQ, "READ".toByteArray())) return null
-        ble.appStartSafe(IMPORTER, "")
+        val l = FlipperTransport.active ?: return null
+        l.storageMkdir(DIR)
+        l.storageDelete(CUR, recursive = false)
+        if (!l.storageWrite(REQ, "READ".toByteArray())) return null
+        // One-shot launch — plain appStart (no forced back-taps). false = loader busy / another app open.
+        if (!l.appStart(IMPORTER, "SETTINGS")) { CompanionLink.report(false); return null }
         repeat(16) {
             delay(500)
-            val r = ble.storageRead(CUR)
-            if (r != null && r.isNotEmpty()) return parse(String(r))
+            val r = l.storageRead(CUR)
+            if (r != null && r.isNotEmpty()) { CompanionLink.report(true); return parse(String(r)) }
         }
+        CompanionLink.report(false)
         return null
     }
 
-    /** Applies the config; returns true once the importer clears the flag. */
+    /**
+     * Applies the config. Returns true once the importer clears the flag. If the Flipper's loader is
+     * busy (the companion can't launch because another app is open) the change is banked and replayed
+     * when access returns — the caller still sees false, but the save isn't lost.
+     */
     suspend fun write(c: Cfg): Boolean {
-        ble.storageMkdir(DIR)
-        if (!ble.storageWrite(PEND, buildPending(c).toByteArray())) return false
-        if (!ble.storageWrite(REQ, "WRITE".toByteArray())) return false
-        ble.appStartSafe(IMPORTER, "")
+        if (writeOnce(c)) { CompanionLink.report(true); return true }
+        CompanionLink.bank("Device settings") { writeOnce(c) }
+        return false
+    }
+
+    /** One apply attempt, no banking. true once the importer consumes the WRITE flag. */
+    private suspend fun writeOnce(c: Cfg): Boolean {
+        val l = FlipperTransport.active ?: return false
+        l.storageMkdir(DIR)
+        if (!l.storageWrite(PEND, buildPending(c).toByteArray())) return false
+        if (!l.storageWrite(REQ, "WRITE".toByteArray())) return false
+        if (!l.appStart(IMPORTER, "SETTINGS")) return false   // one-shot; false = loader busy -> write() banks it
         repeat(16) {
             delay(500)
-            val r = ble.storageRead(REQ)
+            val r = l.storageRead(REQ)
             if (r == null || r.isEmpty()) return true   // flag consumed = applied
         }
         return false

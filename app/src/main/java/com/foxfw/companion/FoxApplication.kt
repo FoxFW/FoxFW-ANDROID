@@ -1,6 +1,8 @@
 package com.foxfw.companion
 
+import android.app.Activity
 import android.app.Application
+import android.os.Bundle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -25,6 +27,25 @@ class FoxApplication : Application() {
         if (!Python.isStarted()) {
             try { Python.start(AndroidPlatform(this)) } catch (_: Throwable) {}
         }
+        // App foreground/background tracking: count started activities. When the app leaves the
+        // foreground (no visible activity) the shared ESP32 connection is torn down; it reconnects on
+        // return if it had been connected. Avoids pulling in lifecycle-process just for ON_STOP.
+        registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
+            private var startedActivities = 0
+            override fun onActivityStarted(activity: Activity) {
+                startedActivities++
+                if (startedActivities == 1) Esp32Hub.onAppForeground()
+            }
+            override fun onActivityStopped(activity: Activity) {
+                startedActivities--
+                if (startedActivities <= 0) { startedActivities = 0; Esp32Hub.onAppBackground() }
+            }
+            override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
+            override fun onActivityResumed(activity: Activity) {}
+            override fun onActivityPaused(activity: Activity) {}
+            override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
+            override fun onActivityDestroyed(activity: Activity) {}
+        })
     }
 }
 

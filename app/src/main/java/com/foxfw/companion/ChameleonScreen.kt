@@ -1,6 +1,7 @@
 package com.foxfw.companion
 
 import android.os.Build
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
@@ -22,7 +23,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -78,6 +79,8 @@ fun ChameleonScreen(onClose: () -> Unit) {
         if (ok) cham.connect()
     }
     val onConnect: () -> Unit = { if (cham.conn != Conn.DISCONNECTED) cham.disconnect() else launcher.launch(perms) }
+    // On a drill-down page, system back returns to the menu rather than exiting the whole tool.
+    BackHandler(enabled = view != CV.MENU) { view = CV.MENU }
 
     Column(
         Modifier.fillMaxSize().verticalScroll(rememberScrollState())
@@ -85,9 +88,13 @@ fun ChameleonScreen(onClose: () -> Unit) {
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(Icons.Filled.ArrowBack, "Back", tint = Fox.fg,
-                modifier = Modifier.size(22.dp).clickable { if (view == CV.MENU) onClose() else view = CV.MENU })
-            Spacer(Modifier.width(12.dp))
+            // Drill-down pages keep an in-page back-to-menu arrow; the menu itself relies on the
+            // outer Tools header arrow (no duplicate arrow on the top-level page).
+            if (view != CV.MENU) {
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back", tint = Fox.fg,
+                    modifier = Modifier.size(22.dp).clickable { view = CV.MENU })
+                Spacer(Modifier.width(12.dp))
+            }
             Column(Modifier.weight(1f)) {
                 Text("ChameleonUltra", color = Fox.fg, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
                 Text(if (view == CV.MENU) "BLE · NORDIC UART" else view.name, color = Fox.muted, fontFamily = FoxMono, fontSize = 10.sp, letterSpacing = 1.sp)

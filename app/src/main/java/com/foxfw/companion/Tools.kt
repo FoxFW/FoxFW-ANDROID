@@ -20,9 +20,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.GraphicEq
 import androidx.compose.material.icons.outlined.GridView
+import androidx.compose.material.icons.outlined.Terminal
 import androidx.compose.material.icons.outlined.Key
 import androidx.compose.material.icons.outlined.Lan
 import androidx.compose.material.icons.outlined.Lightbulb
@@ -36,7 +37,10 @@ import androidx.compose.material.icons.outlined.Router
 import androidx.compose.material.icons.outlined.Sensors
 import androidx.compose.material.icons.outlined.Shield
 import androidx.compose.material.icons.outlined.Folder
+import androidx.compose.material.icons.outlined.GpsFixed
+import androidx.compose.material.icons.outlined.SettingsRemote
 import androidx.compose.material.icons.outlined.Backup
+import androidx.compose.material.icons.outlined.Brush
 import androidx.compose.material.icons.outlined.Bluetooth
 import androidx.compose.material.icons.outlined.Inventory2
 import androidx.compose.material.icons.outlined.History
@@ -61,6 +65,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -80,37 +85,53 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-data class Tool(val id: String, val name: String, val desc: String, val icon: ImageVector)
+data class Tool(val id: String, val name: String, val desc: String, val icon: ImageVector, val cat: String = "general")
 
 private val tools = listOf(
-    Tool("keeloq", "KeeLoq Crack", "204-key store", Icons.Outlined.Lock),
-    Tool("hitag2", "Hitag2 Recover", "SAT offload", Icons.Outlined.Key),
-    Tool("renault", "Renault Seed", "seed → clone", Icons.Outlined.Key),
-    Tool("siggen", "Signal Gen", "replay / TX", Icons.Outlined.GraphicEq),
-    Tool("freq", "Freq Analyzer", "sweep 300–928M", Icons.Outlined.Radar),
-    Tool("band", "Band Analyzer", "2.4/5 GHz · phone WiFi+BLE", Icons.Outlined.Wifi),
-    Tool("wificrack", "Handshake Crack", "WPA PMKID · on-phone", Icons.Outlined.Password),
-    Tool("lanscan", "LAN Scanner", "find hosts · on-phone", Icons.Outlined.Lan),
-    Tool("bleexplore", "BLE Explorer", "GATT · scan · read", Icons.Outlined.Bluetooth),
-    Tool("marauder", "Marauder", "BFFB v2 · drive it all", Icons.Outlined.Router),
-    Tool("pandora", "Pandora Clone", "D-605 + MAX fob", Icons.Outlined.Sensors),
-    Tool("carclone", "Car & Gate Clone", "VAG · KIA · PSA · gates", Icons.Outlined.DirectionsCar),
-    Tool("remote", "Remote Screen", "mirror + control", Icons.Outlined.Screenshot),
-    Tool("hue", "Hue Lights", "CYD proxy · dim & colour", Icons.Outlined.Lightbulb),
-    Tool("chameleon", "ChameleonUltra", "NFC over BLE", Icons.Outlined.Contactless),
-    Tool("psa", "PSA Offload", "TEA brute · BLE", Icons.Outlined.Memory),
-    Tool("tagmaker", "Tag Maker", "NFC/RFID · make & emulate", Icons.Outlined.Contactless),
-    Tool("launcher", "App Launcher", "open any Flipper feature", Icons.Outlined.GridView),
+    // --- General ---
     Tool("files", "File Manager", "browse · pull · push SD", Icons.Outlined.Folder),
+    Tool("remote", "Screen Mirror", "mirror + control", Icons.Outlined.Screenshot),
+    Tool("fwupdate", "Firmware Update", "latest FoxFW, auto", Icons.Outlined.SystemUpdate),
     Tool("backup", "Backup & Restore", "SD + device /int", Icons.Outlined.Backup),
+    Tool("flippercli", "Flipper CLI", "terminal over BLE/USB", Icons.Outlined.Terminal),
+    Tool("launcher", "App Launcher", "open any Flipper feature", Icons.Outlined.GridView),
+    Tool("painter", "Painter", "draw on the Flipper", Icons.Outlined.Brush),
+    Tool("hue", "Hue Lights", "CYD proxy · dim & colour", Icons.Outlined.Lightbulb),
     Tool("inventory", "SD Inventory", "what’s on your SD", Icons.Outlined.Inventory2),
     Tool("history", "History", "decodes · cracks · share", Icons.Outlined.History),
-    Tool("fwupdate", "Firmware Update", "install a .tgz", Icons.Outlined.SystemUpdate),
     Tool("diag", "Diagnostics", "on-device self-test", Icons.Outlined.Memory),
+    // --- RF Analysis ---
+    Tool("keeloq", "KeeLoq Crack", "204-key store", Icons.Outlined.Lock, "rf"),
+    Tool("hitag2", "Hitag2 Recover", "SAT offload", Icons.Outlined.Key, "rf"),
+    Tool("renault", "Renault Seed", "seed → clone", Icons.Outlined.Key, "rf"),
+    Tool("subghz_trim", "SubGHz Trimmer", "view · trim .sub", Icons.Outlined.GraphicEq, "rf"),
+    Tool("siggen", "Signal Gen", "replay / TX", Icons.Outlined.GraphicEq, "rf"),
+    Tool("freq", "Freq Analyzer", "sweep 300–928M", Icons.Outlined.Radar, "rf"),
+    Tool("band", "Band Analyzer", "2.4/5 GHz · phone WiFi+BLE", Icons.Outlined.Wifi, "rf"),
+    Tool("wificrack", "Handshake Crack", "WPA PMKID · on-phone", Icons.Outlined.Password, "rf"),
+    Tool("lanscan", "LAN Scanner", "find hosts · on-phone", Icons.Outlined.Lan, "rf"),
+    Tool("bleexplore", "BLE Explorer", "GATT · scan · read", Icons.Outlined.Bluetooth, "rf"),
+    Tool("pandora", "Pandora Clone", "D-605 + MAX fob", Icons.Outlined.Sensors, "rf"),
+    Tool("carclone", "Car & Gate Clone", "VAG · KIA · PSA · gates", Icons.Outlined.DirectionsCar, "rf"),
+    Tool("chameleon", "ChameleonUltra", "NFC over BLE", Icons.Outlined.Contactless, "rf"),
+    Tool("mfkey", "NFC MFKey", "recover Mifare keys", Icons.Outlined.Key, "rf"),
+    Tool("psa", "PSA Offload", "TEA brute · BLE", Icons.Outlined.Memory, "rf"),
+    Tool("tagmaker", "Tag Maker", "NFC/RFID · make & emulate", Icons.Outlined.Contactless, "rf"),
+    // --- ESP32 (needs a board) ---
+    Tool("esp32", "Esp32", "BFFB v2 · drive it all", Icons.Outlined.Router, "esp32"),
+    Tool("esp32cli", "ESP32 CLI", "terminal over relay / USB", Icons.Outlined.Terminal, "esp32"),
+    Tool("esp_wifi", "ESP32 WiFi", "scan · sniff · attack", Icons.Outlined.Wifi, "esp32"),
+    Tool("esp_ble", "ESP32 BLE", "scan · spam · tags", Icons.Outlined.Bluetooth, "esp32"),
+    Tool("esp_gps", "ESP32 GPS", "fix · track · wardrive", Icons.Outlined.GpsFixed, "esp32"),
+    Tool("esp_ir", "ESP32 IR", "recv · send · TV-B-Gone", Icons.Outlined.SettingsRemote, "esp32"),
+    Tool("esp_subghz", "ESP32 SubGHz", "rx · tx · frequency", Icons.Outlined.Radar, "esp32"),
+    Tool("esp_rfid", "ESP32 RFID", "scan · read · emulate", Icons.Outlined.Contactless, "esp32"),
 )
 
 @Composable
-fun ToolsScreen(fle: FlipperBle, openTarget: String?, onOpenTarget: (String) -> Unit, onClose: () -> Unit) {
+fun ToolsScreen(fle: FlipperBle, category: String, openTarget: String?, onOpenTarget: (String) -> Unit, onClose: () -> Unit) {
+    val listScroll = rememberScrollState() // hoisted: survives opening/closing a tile, resets on tab change
+    val toolsCtx = androidx.compose.ui.platform.LocalContext.current
     if (openTarget == "hitag2") {
         Hitag2OffloadScreen(fle, onClose); return
     }
@@ -138,17 +159,33 @@ fun ToolsScreen(fle: FlipperBle, openTarget: String?, onOpenTarget: (String) -> 
     if (openTarget == "bleexplore") {
         BleGattScreen(onClose); return
     }
-    if (openTarget == "marauder") {
-        MarauderScreen(onClose); return
+    if (openTarget == "esp32") {
+        Esp32Screen(onClose); return
+    }
+    if (openTarget != null && openTarget.startsWith("esp_")) {
+        EspTerminalScreen(openTarget.removePrefix("esp_"), onClose); return
+    }
+    if (openTarget == "esp32cli") {
+        // Rendered as a full-screen layer in FoxApp (over the Scaffold); nothing to draw here.
+        return
     }
     if (openTarget == "remote") {
         RemoteScreen(fle, onClose); return
     }
-    if (openTarget == "hue" && BuildConfig.PRIVATE_BUILD) {
+    if (openTarget == "subghz_trim") {
+        SubGhzViewerScreen(fle, onClose); return
+    }
+    if (openTarget == "painter") {
+        PainterScreen(fle, onClose); return
+    }
+    if (openTarget == "hue") {
         HueScreen(onClose); return
     }
     if (openTarget == "chameleon") {
         ChameleonScreen(onClose); return
+    }
+    if (openTarget == "mfkey") {
+        NfcMfkeyScreen(fle, onClose); return
     }
     if (openTarget == "pandora") {
         PandoraScreen(onClose); return
@@ -164,6 +201,10 @@ fun ToolsScreen(fle: FlipperBle, openTarget: String?, onOpenTarget: (String) -> 
     }
     if (openTarget == "launcher") {
         FlipperLauncherScreen(onClose); return
+    }
+    if (openTarget == "flippercli") {
+        // Rendered as a full-screen layer in FoxApp (over the Scaffold); nothing to draw here.
+        return
     }
     if (openTarget == "fwupdate") {
         FwUpdateScreen(onClose); return
@@ -184,15 +225,29 @@ fun ToolsScreen(fle: FlipperBle, openTarget: String?, onOpenTarget: (String) -> 
         DiagnosticsScreen(onClose); return
     }
     Column(
-        Modifier.fillMaxWidth().verticalScroll(rememberScrollState())
+        Modifier.fillMaxWidth().verticalScroll(listScroll)
             .padding(start = 16.dp, end = 16.dp, top = 2.dp, bottom = 20.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        // 2-col grid (private-only tiles like Hue are hidden in the distributed/release build)
-        tools.filter { it.id != "hue" || BuildConfig.PRIVATE_BUILD }.chunked(2).forEach { row ->
+        // 2-col grid, one category at a time (general / rf / esp32).
+        val shown = tools.filter { it.cat == category }
+        // Every ESP32 tile needs a board attached: available when the Device-page detector reports an
+        // external ESP32, or a board is plugged into the phone's USB-OTG. Without one we keep the tiles
+        // VISIBLE but disabled (greyed, non-tappable) rather than hiding them, so the layout never shifts.
+        val espE = CompanionCache.rx?.esp32
+        val espAvail = espE == "fox" || espE == "notfox" || Esp32UsbLink.find(toolsCtx) != null
+        shown.chunked(2).forEach { row ->
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(11.dp)) {
                 row.forEach { t ->
-                    ToolCard(t, Modifier.weight(1f)) { onOpenTarget(t.id) }
+                    val enabled = t.cat != "esp32" || espAvail
+                    ToolCard(t, Modifier.weight(1f), enabled = enabled) {
+                        if (enabled) onOpenTarget(t.id)
+                        else android.widget.Toast.makeText(
+                            toolsCtx,
+                            "Connect your ESP32 first — plug it into the phone (USB-OTG), or link the Flipper on the Device tab.",
+                            android.widget.Toast.LENGTH_LONG,
+                        ).show()
+                    }
                 }
                 if (row.size == 1) Spacer(Modifier.weight(1f))
             }
@@ -201,14 +256,13 @@ fun ToolsScreen(fle: FlipperBle, openTarget: String?, onOpenTarget: (String) -> 
 }
 
 @Composable
-private fun ToolCard(t: Tool, modifier: Modifier = Modifier, onClick: () -> Unit) {
+private fun ToolCard(t: Tool, modifier: Modifier = Modifier, enabled: Boolean = true, onClick: () -> Unit) {
     val shape = RoundedCornerShape(16.dp)
-    Box(
-        modifier.clip(shape)
-            .background(Brush.verticalGradient(listOf(Fox.surface2, Fox.surface)))
-            .border(1.dp, Fox.line, shape)
-            .clickable { onClick() }
-    ) {
+    val base = modifier.clip(shape)
+        .background(Brush.verticalGradient(listOf(Fox.surface2, Fox.surface)))
+        .border(1.dp, Fox.line, shape)
+    // Disabled tiles are still tappable (greyed) so the tap can explain why they're off.
+    Box(base.alpha(if (enabled) 1f else 0.42f).clickable { onClick() }) {
         Column(Modifier.padding(14.dp).heightIn(min = 118.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
             // recessed, screen-dark icon chip with an amber rim — reads like a panel key
             Box(Modifier.size(36.dp).clip(RoundedCornerShape(9.dp)).background(Fox.screen)
@@ -217,8 +271,11 @@ private fun ToolCard(t: Tool, modifier: Modifier = Modifier, onClick: () -> Unit
                 Icon(t.icon, null, tint = Fox.amber, modifier = Modifier.size(19.dp))
             }
             Spacer(Modifier.weight(1f))
-            Text(t.name, color = Fox.fg, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
-            Text(t.desc, color = Fox.muted, fontFamily = FoxMono, fontSize = 11.sp)
+            // maxLines=1 on the title + a reserved 2-line desc keep every tile's title on the same
+            // baseline across a row, regardless of how long each description is.
+            Text(t.name, color = Fox.fg, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, maxLines = 1)
+            Text(if (enabled) t.desc else "connect an ESP32", color = Fox.muted, fontFamily = FoxMono,
+                fontSize = 11.sp, minLines = 2, maxLines = 2)
         }
     }
 }
@@ -318,8 +375,6 @@ private fun Hitag2OffloadScreen(fle: FlipperBle, onClose: () -> Unit) {
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(Icons.Filled.ArrowBack, "Back", tint = Fox.fg, modifier = Modifier.size(22.dp).clickable { fle.incoming = null; onClose() })
-            Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f)) {
                 Text("Hitag2 Recover", color = Fox.fg, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
                 Text("GUESS-AND-DETERMINE · PHONE OFFLOAD", color = Fox.muted, fontFamily = FoxMono,
