@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.foxfw.companion.FoxEsp32DialectTest" tests="21" skipped="0" failures="0" errors="0" timestamp="2026-10-31T10:22:52.214Z" hostname="THEATREROOM" time="0.035">
+  <properties/>
+  <testcase name="attacksMap" classname="com.foxfw.companion.FoxEsp32DialectTest" time="0.012"/>
+  <testcase name="selectMaps" classname="com.foxfw.companion.FoxEsp32DialectTest" time="0.007"/>
+  <testcase name="reconAndMacMap" classname="com.foxfw.companion.FoxEsp32DialectTest" time="0.001"/>
+  <testcase name="headlessDisplayCommandsUnsupported" classname="com.foxfw.companion.FoxEsp32DialectTest" time="0.0"/>
+  <testcase name="staRowRebuilds" classname="com.foxfw.companion.FoxEsp32DialectTest" time="0.005"/>
+  <testcase name="scanAndListMapToRescan" classname="com.foxfw.companion.FoxEsp32DialectTest" time="0.0"/>
+  <testcase name="bleSpamClassMaps" classname="com.foxfw.companion.FoxEsp32DialectTest" time="0.001"/>
+  <testcase name="unknownPassesThrough" classname="com.foxfw.companion.FoxEsp32DialectTest" time="0.0"/>
+  <testcase name="selectedSuffixWhenIndexMatches" classname="com.foxfw.companion.FoxEsp32DialectTest" time="0.004"/>
+  <testcase name="detectsFoxBanner" classname="com.foxfw.companion.FoxEsp32DialectTest" time="0.0"/>
+  <testcase name="statusLinesPassThrough" classname="com.foxfw.companion.FoxEsp32DialectTest" time="0.001"/>
+  <testcase name="channelMaps" classname="com.foxfw.companion.FoxEsp32DialectTest" time="0.0"/>
+  <testcase name="apRowRebuildsToEsp32" classname="com.foxfw.companion.FoxEsp32DialectTest" time="0.001"/>
+  <testcase name="selectAllIsUnsupported" classname="com.foxfw.companion.FoxEsp32DialectTest" time="0.0"/>
+  <testcase name="sniffFamilyMaps" classname="com.foxfw.companion.FoxEsp32DialectTest" time="0.0"/>
+  <testcase name="terminatorsSwallowed" classname="com.foxfw.companion.FoxEsp32DialectTest" time="0.0"/>
+  <testcase name="beaconApCloneUnsupported" classname="com.foxfw.companion.FoxEsp32DialectTest" time="0.001"/>
+  <testcase name="scanallSendsBoth" classname="com.foxfw.companion.FoxEsp32DialectTest" time="0.0"/>
+  <testcase name="portalAndSystemMap" classname="com.foxfw.companion.FoxEsp32DialectTest" time="0.0"/>
+  <testcase name="stopscanIsSwallowedWithAck" classname="com.foxfw.companion.FoxEsp32DialectTest" time="0.0"/>
+  <testcase name="captureFormMapsToDeauthPlusPcap" classname="com.foxfw.companion.FoxEsp32DialectTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

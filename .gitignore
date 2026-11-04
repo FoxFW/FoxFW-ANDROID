@@ -1,6 +1,6 @@
 # ---- Gradle / Android build output ----
 #.gradle/
-build/
+/build/
 #app/build/
 app/build/outputs/apk/debug
 #captures/

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.foxfw.companion.FiatCapturesTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-31T10:22:52.132Z" hostname="THEATREROOM" time="0.003">
+  <properties/>
+  <testcase name="toleratesHexValues" classname="com.foxfw.companion.FiatCapturesTest" time="0.002"/>
+  <testcase name="rejectsOtherProtocols" classname="com.foxfw.companion.FiatCapturesTest" time="0.0"/>
+  <testcase name="rejectsMissingHop" classname="com.foxfw.companion.FiatCapturesTest" time="0.0"/>
+  <testcase name="parsesFiatV1" classname="com.foxfw.companion.FiatCapturesTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

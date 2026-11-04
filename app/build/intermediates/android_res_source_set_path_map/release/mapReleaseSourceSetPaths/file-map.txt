@@ -1,0 +1,7 @@
+com.foxfw.companion.app-updated_navigation_xml-0 D:\FoxFW-ANDROID\app\build\generated\updated_navigation_xml\release
+com.foxfw.companion.app-packageReleaseResources-1 D:\FoxFW-ANDROID\app\build\intermediates\incremental\release\packageReleaseResources\merged.dir
+com.foxfw.companion.app-packageReleaseResources-2 D:\FoxFW-ANDROID\app\build\intermediates\incremental\release\packageReleaseResources\stripped.dir
+com.foxfw.companion.app-release-3 D:\FoxFW-ANDROID\app\build\intermediates\merged_res\release\mergeReleaseResources
+com.foxfw.companion.app-main-4 D:\FoxFW-ANDROID\app\src\main\res
+com.foxfw.companion.app-release-5 D:\FoxFW-ANDROID\app\src\release\res
+gradleHome-0 C:\Users\PC\.gradle

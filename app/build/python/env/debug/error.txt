@@ -1,0 +1,1 @@
+Couldn't find Python 3.10. See https://chaquo.com/chaquopy/doc/current/android.html#buildpython.

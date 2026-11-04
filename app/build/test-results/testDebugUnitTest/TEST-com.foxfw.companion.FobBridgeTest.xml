@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.foxfw.companion.FobBridgeTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-31T10:22:52.141Z" hostname="THEATREROOM" time="0.067">
+  <properties/>
+  <testcase name="parsesForgeRaw" classname="com.foxfw.companion.FobBridgeTest" time="0.058"/>
+  <testcase name="parsesFobInfoRouteAWithButtons" classname="com.foxfw.companion.FobBridgeTest" time="0.005"/>
+  <testcase name="parsesForgeError" classname="com.foxfw.companion.FobBridgeTest" time="0.001"/>
+  <testcase name="parsesReplayFobInfo" classname="com.foxfw.companion.FobBridgeTest" time="0.001"/>
+  <testcase name="nextCounterIsCapturedPlusOne" classname="com.foxfw.companion.FobBridgeTest" time="0.0"/>
+  <testcase name="parsesForgeProtocol" classname="com.foxfw.companion.FobBridgeTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

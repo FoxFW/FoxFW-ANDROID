@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -39,6 +40,13 @@ import androidx.compose.material.icons.outlined.Sensors
 import androidx.compose.material.icons.outlined.Wifi
 import androidx.compose.material.icons.outlined.Lan
 import androidx.compose.material.icons.outlined.Password
+import androidx.compose.material.icons.outlined.VpnKey
+import androidx.compose.material.icons.outlined.Hub
+import androidx.compose.material.icons.outlined.Usb
+import androidx.compose.material.icons.outlined.ScreenShare
+import androidx.compose.material.icons.outlined.SystemUpdate
+import androidx.compose.material.icons.outlined.Timeline
+import androidx.compose.material.icons.outlined.Brush
 import com.foxfw.companion.ui.Fox
 import com.foxfw.companion.ui.FoxCard
 import com.foxfw.companion.ui.FoxLogo
@@ -76,6 +84,36 @@ object WhatsNew {
             "WIFI",
         ),
         Item(
+            Icons.Outlined.Hub,
+            "One ESP32 connection, one console",
+            "Connect the Esp32 board once and it stays connected as you move around the app — the " +
+                "Wi-Fi, BLE, GPS, IR, Sub-GHz and RFID terminals all share the one link and a single " +
+                "console, so scans and captures show up in the same place wherever they came from.",
+            "ESP32",
+        ),
+        Item(
+            Icons.Outlined.Usb,
+            "Connect over USB",
+            "Pair the Flipper straight to the phone with a USB-OTG cable, not just over Bluetooth. The " +
+                "same features work either way, and USB is the faster link for screen mirroring and " +
+                "large file transfers.",
+            "CONNECT",
+        ),
+        Item(
+            Icons.Outlined.ScreenShare,
+            "Screen mirror & remote",
+            "Mirror the Flipper's screen on the phone and drive it — the D-pad, OK and Back — with an " +
+                "on-screen keyboard for typing. Works in portrait and landscape. Device tab.",
+            "DEVICE",
+        ),
+        Item(
+            Icons.Outlined.SystemUpdate,
+            "Firmware updates from the app",
+            "Check for and install FoxFW updates over the existing link, no computer needed — the app " +
+                "downloads the build and flashes it to the Flipper for you. Device tab.",
+            "UPDATE",
+        ),
+        Item(
             Icons.Outlined.Lan,
             "On-phone network recon",
             "New LAN Scanner (finds your subnet, connect-scans every host for common services) and BLE " +
@@ -99,10 +137,19 @@ object WhatsNew {
             "RADIO",
         ),
         Item(
+            Icons.Outlined.Timeline,
+            "Sub-GHz viewer & trimmer",
+            "See any capture as a waveform, then select a section and trim everything outside it to " +
+                "save a clean .sub. The Decode capture window is now adjustable (1–30s) and a live " +
+                "capture can be stopped early, keeping what was recorded so far.",
+            "RADIO",
+        ),
+        Item(
             Icons.Outlined.DirectionsCar,
-            "Expanded car decoders",
-            "The ProtoPirate / MOB decoder set is live in the on-phone ArkeEngine — KIA, VAG, PSA, " +
-                "Fiat, Subaru and the gate families decode straight from a Flipper RAW capture.",
+            "Full Sub-GHz decoder parity",
+            "The on-phone ArkeEngine now decodes the same Sub-GHz protocols the firmware does — the " +
+                "whole set, including full KeeLoq and Alutech rolling-code decode (KIA, VAG, PSA, Fiat, " +
+                "Subaru, the gate families and more) — straight from a Flipper RAW capture.",
             "DECODE",
         ),
         Item(
@@ -136,6 +183,20 @@ object WhatsNew {
             "NFC",
         ),
         Item(
+            Icons.Outlined.VpnKey,
+            "MIFARE key recovery (MFKey)",
+            "Recover MIFARE Classic keys on the phone from the nonces the Flipper collects with " +
+                "Detect Reader — it reads the .mfkey32.log off the device, solves each one, and can add " +
+                "the recovered keys straight to your user dictionary. Tools → MFKey.",
+            "NFC",
+        ),
+        Item(
+            Icons.Outlined.Brush,
+            "Wallpaper Painter",
+            "Draw a 128×64 wallpaper for the Flipper right on the phone and send it across. Tools → Painter.",
+            "WALLPAPER",
+        ),
+        Item(
             Icons.Outlined.Sensors,
             "Pandora suite (native)",
             "The whole Pandora keyfob suite now runs natively on the phone: emulate the real D-605 / " +
@@ -159,6 +220,7 @@ fun WhatsNewSheet(onDismiss: () -> Unit) {
         Column(
             Modifier
                 .fillMaxSize()
+                .navigationBarsPadding()
                 .verticalScroll(rememberScrollState())
                 .padding(start = 16.dp, end = 16.dp, top = 28.dp, bottom = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,

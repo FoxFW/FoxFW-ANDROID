@@ -1,0 +1,7 @@
+com.foxfw.companion.app-updated_navigation_xml-0 D:\FoxFW-ANDROID\app\build\generated\updated_navigation_xml\debug
+com.foxfw.companion.app-packageDebugResources-1 D:\FoxFW-ANDROID\app\build\intermediates\incremental\debug\packageDebugResources\merged.dir
+com.foxfw.companion.app-packageDebugResources-2 D:\FoxFW-ANDROID\app\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
+com.foxfw.companion.app-debug-3 D:\FoxFW-ANDROID\app\build\intermediates\merged_res\debug\mergeDebugResources
+com.foxfw.companion.app-debug-4 D:\FoxFW-ANDROID\app\src\debug\res
+com.foxfw.companion.app-main-5 D:\FoxFW-ANDROID\app\src\main\res
+gradleHome-0 C:\Users\PC\.gradle

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.foxfw.companion.HueApiTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-31T10:22:52.271Z" hostname="THEATREROOM" time="0.011">
+  <properties/>
+  <testcase name="parseStateReadsFields" classname="com.foxfw.companion.HueApiTest" time="0.002"/>
+  <testcase name="endpointUrls" classname="com.foxfw.companion.HueApiTest" time="0.007"/>
+  <testcase name="setUrlAppendsToken" classname="com.foxfw.companion.HueApiTest" time="0.0"/>
+  <testcase name="parseStateNullWhenNotOk" classname="com.foxfw.companion.HueApiTest" time="0.0"/>
+  <testcase name="parseHealthExtractsBulbs" classname="com.foxfw.companion.HueApiTest" time="0.002"/>
+  <testcase name="setUrlBuildsQueryFromPresentArgsOnly" classname="com.foxfw.companion.HueApiTest" time="0.0"/>
+  <testcase name="normalizeBaseAddsSchemeAndTrims" classname="com.foxfw.companion.HueApiTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

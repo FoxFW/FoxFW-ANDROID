@@ -1,0 +1,25 @@
+{
+    "assets": {
+        "requirements-arm64-v8a.imy": "b04f3ee8f5e43fa3b162981b50bb72fe1acabb33",
+        "bootstrap-native/arm64-v8a/mmap.cpython-310.so": "656b8676a9488176f03a1237c14492d4096f0978",
+        "bootstrap-native/arm64-v8a/java/chaquopy.so": "90b9ae8594b659feea2a98e52f2f34febb1d861f",
+        "bootstrap-native/arm64-v8a/_bz2.cpython-310.so": "bbb22edef55683bf4a7962528f8f6621daae11f9",
+        "bootstrap.imy": "80e8f2e26874e7055bccd4ffc1d83b9104c6532a",
+        "bootstrap-native/arm64-v8a/_sha512.cpython-310.so": "7c3baa42acf617b0f0bc363c96f4ea77b69fd8f7",
+        "cacert.pem": "9110158ba911882667460f8c81fbd7510353dfd7",
+        "bootstrap-native/arm64-v8a/_struct.cpython-310.so": "d600f0ac261fdf42e89ab8dba639a89db09f8ca8",
+        "bootstrap-native/arm64-v8a/_ctypes.cpython-310.so": "11479971edc200c395f1fdfda665367eebd33ef3",
+        "bootstrap-native/arm64-v8a/_datetime.cpython-310.so": "5a747c67cf5ac412c8bbad1b8de256234fc127fc",
+        "bootstrap-native/arm64-v8a/math.cpython-310.so": "0607767787bbac3f99a45037a531057cec1a15dc",
+        "app.imy": "f6cb5fb3197b7d02cf48c43fc8dfb0c5dc824d08",
+        "stdlib-common.imy": "5b8610dbc08950a7c876c7daeefd16651c066627",
+        "bootstrap-native/arm64-v8a/zlib.cpython-310.so": "d4dfc74e8b2cf6a855cec8260d7c5c904274f9dd",
+        "bootstrap-native/arm64-v8a/_lzma.cpython-310.so": "33c6ed0a5d2a6307de011c1112bcd45e32af1ad5",
+        "bootstrap-native/arm64-v8a/_random.cpython-310.so": "d05ab2ac71c6d747f0321347c5d391073d185db6",
+        "bootstrap-native/arm64-v8a/binascii.cpython-310.so": "0f4957b64897ebda184c4e487af0861426985c4d",
+        "stdlib-arm64-v8a.imy": "a8a504f09621447ec972a4e615758e0837af348c",
+        "requirements-common.imy": "b04f3ee8f5e43fa3b162981b50bb72fe1acabb33"
+    },
+    "extract_packages": [],
+    "python_version": "3.10"
+}

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.foxfw.companion.WpaCmacTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-31T10:22:52.353Z" hostname="THEATREROOM" time="0.008">
+  <properties/>
+  <testcase name="cmacEmptyMessage" classname="com.foxfw.companion.WpaCmacTest" time="0.006"/>
+  <testcase name="cmacPartialLastBlock" classname="com.foxfw.companion.WpaCmacTest" time="0.001"/>
+  <testcase name="cmacFourBlocks" classname="com.foxfw.companion.WpaCmacTest" time="0.0"/>
+  <testcase name="cmacOneFullBlock" classname="com.foxfw.companion.WpaCmacTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

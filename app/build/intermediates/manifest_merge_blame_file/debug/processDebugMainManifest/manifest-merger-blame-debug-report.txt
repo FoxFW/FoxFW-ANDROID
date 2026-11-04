@@ -1,0 +1,292 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.foxfw.companion"
+4    android:versionCode="2"
+5    android:versionName="2.1" >
+6
+7    <uses-sdk
+7-->INJECTED
+8        android:minSdkVersion="26"
+8-->INJECTED
+9        android:targetSdkVersion="37" />
+9-->INJECTED
+10
+11    <uses-feature
+11-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:4:5-90
+12        android:name="android.hardware.bluetooth_le"
+12-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:4:19-63
+13        android:required="true" />
+13-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:4:64-87
+14    <uses-feature
+14-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:5:5-87
+15        android:name="android.hardware.usb.host"
+15-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:5:19-59
+16        android:required="false" />
+16-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:5:60-84
+17
+18    <!-- Legacy BLE (API <= 30) -->
+19    <uses-permission
+19-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:8:5-95
+20        android:name="android.permission.BLUETOOTH"
+20-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:8:22-65
+21        android:maxSdkVersion="30" />
+21-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:8:66-92
+22    <uses-permission
+22-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:9:5-101
+23        android:name="android.permission.BLUETOOTH_ADMIN"
+23-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:9:22-71
+24        android:maxSdkVersion="30" />
+24-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:9:72-98
+25
+26    <!-- Location: Android gates WiFi scan RESULTS on it (Band Analyzer), on ALL API levels. -->
+27    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+27-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:12:5-79
+27-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:12:22-76
+28    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+28-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:13:5-81
+28-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:13:22-78
+29
+30    <!-- Modern BLE (API 31+) -->
+31    <uses-permission
+31-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:16:5-17:58
+32        android:name="android.permission.BLUETOOTH_SCAN"
+32-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:16:22-70
+33        android:usesPermissionFlags="neverForLocation" />
+33-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:17:9-55
+34    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+34-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:18:5-76
+34-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:18:22-73
+35
+36    <!-- Phone Band Analyzer: read WiFi scans + nudge new ones (activity map, never for location) -->
+37    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+37-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:21:5-76
+37-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:21:22-73
+38    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+38-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:22:5-76
+38-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:22:22-73
+39    <!-- LAN Scanner: read the active network's link properties (own IP + subnet prefix). -->
+40    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+40-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:24:5-79
+40-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:24:22-76
+41    <uses-permission android:name="android.permission.INTERNET" />
+41-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:25:5-67
+41-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:25:22-64
+42    <!-- Hue tile: resolve the CYD proxy's *.local host via mDNS (MulticastLock). -->
+43    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+43-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:27:5-86
+43-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:27:22-83
+44    <uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES" />
+44-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:28:5-78
+44-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:28:22-75
+45
+46    <!-- Keep the Hitag2 crack running in the background. -->
+47    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+47-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:31:5-77
+47-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:31:22-74
+48    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+48-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:32:5-89
+48-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:32:22-86
+49    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+49-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:33:5-77
+49-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:33:22-74
+50    <uses-permission android:name="android.permission.WAKE_LOCK" />
+50-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:34:5-68
+50-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:34:22-65
+51    <uses-permission android:name="android.permission.VIBRATE" />
+51-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:35:5-66
+51-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:35:22-63
+52
+53    <permission
+53-->[androidx.core:core:1.19.1] C:\Users\PC\.gradle\caches\9.8.1\transforms\546f462d4e5020db4780dc14132fec96\transformed\core-1.19.1\AndroidManifest.xml:22:5-24:47
+54        android:name="com.foxfw.companion.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+54-->[androidx.core:core:1.19.1] C:\Users\PC\.gradle\caches\9.8.1\transforms\546f462d4e5020db4780dc14132fec96\transformed\core-1.19.1\AndroidManifest.xml:23:9-81
+55        android:protectionLevel="signature" />
+55-->[androidx.core:core:1.19.1] C:\Users\PC\.gradle\caches\9.8.1\transforms\546f462d4e5020db4780dc14132fec96\transformed\core-1.19.1\AndroidManifest.xml:24:9-44
+56
+57    <uses-permission android:name="com.foxfw.companion.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+57-->[androidx.core:core:1.19.1] C:\Users\PC\.gradle\caches\9.8.1\transforms\546f462d4e5020db4780dc14132fec96\transformed\core-1.19.1\AndroidManifest.xml:26:5-97
+57-->[androidx.core:core:1.19.1] C:\Users\PC\.gradle\caches\9.8.1\transforms\546f462d4e5020db4780dc14132fec96\transformed\core-1.19.1\AndroidManifest.xml:26:22-94
+58
+59    <application
+59-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:37:5-84:19
+60        android:name="com.foxfw.companion.FoxApplication"
+60-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:38:9-39
+61        android:allowBackup="false"
+61-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:39:9-36
+62        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+62-->[androidx.core:core:1.19.1] C:\Users\PC\.gradle\caches\9.8.1\transforms\546f462d4e5020db4780dc14132fec96\transformed\core-1.19.1\AndroidManifest.xml:28:18-86
+63        android:debuggable="true"
+64        android:extractNativeLibs="false"
+64-->INJECTED
+65        android:icon="@mipmap/ic_launcher"
+65-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:40:9-43
+66        android:label="@string/app_name"
+66-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:42:9-41
+67        android:roundIcon="@mipmap/ic_launcher_round"
+67-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:41:9-54
+68        android:supportsRtl="true"
+68-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:43:9-35
+69        android:theme="@style/Theme.FoxFW"
+69-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:45:9-43
+70        android:usesCleartextTraffic="true" >
+70-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:44:9-44
+71        <activity
+71-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:47:9-64:20
+72            android:name="com.foxfw.companion.MainActivity"
+72-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:48:13-41
+73            android:configChanges="orientation|screenSize|keyboardHidden"
+73-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:52:13-74
+74            android:exported="true"
+74-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:49:13-36
+75            android:launchMode="singleTop"
+75-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:50:13-43
+76            android:windowSoftInputMode="adjustResize" >
+76-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:51:13-55
+77            <intent-filter>
+77-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:53:13-56:29
+78                <action android:name="android.intent.action.MAIN" />
+78-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:54:17-69
+78-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:54:25-66
+79
+80                <category android:name="android.intent.category.LAUNCHER" />
+80-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:55:17-77
+80-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:55:27-74
+81            </intent-filter>
+82            <!-- Open the app when a Flipper (CDC VCP) is plugged in. -->
+83            <intent-filter>
+83-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:58:13-60:29
+84                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+84-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:59:17-90
+84-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:59:25-87
+85            </intent-filter>
+86
+87            <meta-data
+87-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:61:13-63:57
+88                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+88-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:62:17-79
+89                android:resource="@xml/device_filter" />
+89-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:63:17-54
+90        </activity>
+91
+92        <service
+92-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:66:9-73:19
+93            android:name="com.foxfw.companion.CrackService"
+93-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:67:13-41
+94            android:exported="false"
+94-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:68:13-37
+95            android:foregroundServiceType="specialUse" >
+95-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:69:13-55
+96            <property
+96-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:70:13-72:131
+97                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+97-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:71:17-76
+98                android:value="On-device Hitag2 key recovery requested by the user; CPU-bound, must survive app backgrounding." />
+98-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:72:17-128
+99        </service>
+100
+101        <provider
+101-->INJECTED
+102            android:name="androidx.core.content.FileProvider"
+102-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:76:13-62
+103            android:authorities="com.foxfw.companion.fileprovider"
+103-->INJECTED
+104            android:exported="false"
+104-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:78:13-37
+105            android:grantUriPermissions="true" >
+105-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:79:13-47
+106            <meta-data
+106-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:80:13-82:54
+107                android:name="android.support.FILE_PROVIDER_PATHS"
+107-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:81:17-67
+108                android:resource="@xml/file_paths" />
+108-->D:\FoxFW-ANDROID\app\src\main\AndroidManifest.xml:82:17-51
+109        </provider>
+110
+111        <activity
+111-->[androidx.compose.ui:ui-tooling-android:1.12.1] C:\Users\PC\.gradle\caches\9.8.1\transforms\03719a2ee15810597e3000d2cc4e9b85\transformed\ui-tooling\AndroidManifest.xml:23:9-25:39
+112            android:name="androidx.compose.ui.tooling.PreviewActivity"
+112-->[androidx.compose.ui:ui-tooling-android:1.12.1] C:\Users\PC\.gradle\caches\9.8.1\transforms\03719a2ee15810597e3000d2cc4e9b85\transformed\ui-tooling\AndroidManifest.xml:24:13-71
+113            android:exported="true" />
+113-->[androidx.compose.ui:ui-tooling-android:1.12.1] C:\Users\PC\.gradle\caches\9.8.1\transforms\03719a2ee15810597e3000d2cc4e9b85\transformed\ui-tooling\AndroidManifest.xml:25:13-36
+114
+115        <uses-library
+115-->[androidx.window:window:1.5.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\bac50ceebf5ad5ce4c52303766d5f3f8\transformed\window-1.5.0\AndroidManifest.xml:23:9-25:40
+116            android:name="androidx.window.extensions"
+116-->[androidx.window:window:1.5.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\bac50ceebf5ad5ce4c52303766d5f3f8\transformed\window-1.5.0\AndroidManifest.xml:24:13-54
+117            android:required="false" />
+117-->[androidx.window:window:1.5.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\bac50ceebf5ad5ce4c52303766d5f3f8\transformed\window-1.5.0\AndroidManifest.xml:25:13-37
+118        <uses-library
+118-->[androidx.window:window:1.5.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\bac50ceebf5ad5ce4c52303766d5f3f8\transformed\window-1.5.0\AndroidManifest.xml:26:9-28:40
+119            android:name="androidx.window.sidecar"
+119-->[androidx.window:window:1.5.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\bac50ceebf5ad5ce4c52303766d5f3f8\transformed\window-1.5.0\AndroidManifest.xml:27:13-51
+120            android:required="false" />
+120-->[androidx.window:window:1.5.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\bac50ceebf5ad5ce4c52303766d5f3f8\transformed\window-1.5.0\AndroidManifest.xml:28:13-37
+121
+122        <provider
+122-->[androidx.emoji2:emoji2:1.4.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\823c4c0d4c9fd6c40cdbb99f72472296\transformed\emoji2-1.4.0\AndroidManifest.xml:24:9-32:20
+123            android:name="androidx.startup.InitializationProvider"
+123-->[androidx.emoji2:emoji2:1.4.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\823c4c0d4c9fd6c40cdbb99f72472296\transformed\emoji2-1.4.0\AndroidManifest.xml:25:13-67
+124            android:authorities="com.foxfw.companion.androidx-startup"
+124-->[androidx.emoji2:emoji2:1.4.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\823c4c0d4c9fd6c40cdbb99f72472296\transformed\emoji2-1.4.0\AndroidManifest.xml:26:13-68
+125            android:exported="false" >
+125-->[androidx.emoji2:emoji2:1.4.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\823c4c0d4c9fd6c40cdbb99f72472296\transformed\emoji2-1.4.0\AndroidManifest.xml:27:13-37
+126            <meta-data
+126-->[androidx.emoji2:emoji2:1.4.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\823c4c0d4c9fd6c40cdbb99f72472296\transformed\emoji2-1.4.0\AndroidManifest.xml:29:13-31:52
+127                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+127-->[androidx.emoji2:emoji2:1.4.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\823c4c0d4c9fd6c40cdbb99f72472296\transformed\emoji2-1.4.0\AndroidManifest.xml:30:17-75
+128                android:value="androidx.startup" />
+128-->[androidx.emoji2:emoji2:1.4.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\823c4c0d4c9fd6c40cdbb99f72472296\transformed\emoji2-1.4.0\AndroidManifest.xml:31:17-49
+129            <meta-data
+129-->[androidx.lifecycle:lifecycle-process:2.11.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\670efaf220331804e3ff282ba3262fb9\transformed\lifecycle-process-2.11.0\AndroidManifest.xml:29:13-31:52
+130                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+130-->[androidx.lifecycle:lifecycle-process:2.11.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\670efaf220331804e3ff282ba3262fb9\transformed\lifecycle-process-2.11.0\AndroidManifest.xml:30:17-78
+131                android:value="androidx.startup" />
+131-->[androidx.lifecycle:lifecycle-process:2.11.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\670efaf220331804e3ff282ba3262fb9\transformed\lifecycle-process-2.11.0\AndroidManifest.xml:31:17-49
+132            <meta-data
+132-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\4c1a5138f40844f145027456483baf80\transformed\profileinstaller-1.4.0\AndroidManifest.xml:29:13-31:52
+133                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+133-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\4c1a5138f40844f145027456483baf80\transformed\profileinstaller-1.4.0\AndroidManifest.xml:30:17-85
+134                android:value="androidx.startup" />
+134-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\4c1a5138f40844f145027456483baf80\transformed\profileinstaller-1.4.0\AndroidManifest.xml:31:17-49
+135        </provider>
+136
+137        <receiver
+137-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\4c1a5138f40844f145027456483baf80\transformed\profileinstaller-1.4.0\AndroidManifest.xml:34:9-52:20
+138            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+138-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\4c1a5138f40844f145027456483baf80\transformed\profileinstaller-1.4.0\AndroidManifest.xml:35:13-76
+139            android:directBootAware="false"
+139-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\4c1a5138f40844f145027456483baf80\transformed\profileinstaller-1.4.0\AndroidManifest.xml:36:13-44
+140            android:enabled="true"
+140-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\4c1a5138f40844f145027456483baf80\transformed\profileinstaller-1.4.0\AndroidManifest.xml:37:13-35
+141            android:exported="true"
+141-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\4c1a5138f40844f145027456483baf80\transformed\profileinstaller-1.4.0\AndroidManifest.xml:38:13-36
+142            android:permission="android.permission.DUMP" >
+142-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\4c1a5138f40844f145027456483baf80\transformed\profileinstaller-1.4.0\AndroidManifest.xml:39:13-57
+143            <intent-filter>
+143-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\4c1a5138f40844f145027456483baf80\transformed\profileinstaller-1.4.0\AndroidManifest.xml:40:13-42:29
+144                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+144-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\4c1a5138f40844f145027456483baf80\transformed\profileinstaller-1.4.0\AndroidManifest.xml:41:17-91
+144-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\4c1a5138f40844f145027456483baf80\transformed\profileinstaller-1.4.0\AndroidManifest.xml:41:25-88
+145            </intent-filter>
+146            <intent-filter>
+146-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\4c1a5138f40844f145027456483baf80\transformed\profileinstaller-1.4.0\AndroidManifest.xml:43:13-45:29
+147                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+147-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\4c1a5138f40844f145027456483baf80\transformed\profileinstaller-1.4.0\AndroidManifest.xml:44:17-85
+147-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\4c1a5138f40844f145027456483baf80\transformed\profileinstaller-1.4.0\AndroidManifest.xml:44:25-82
+148            </intent-filter>
+149            <intent-filter>
+149-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\4c1a5138f40844f145027456483baf80\transformed\profileinstaller-1.4.0\AndroidManifest.xml:46:13-48:29
+150                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+150-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\4c1a5138f40844f145027456483baf80\transformed\profileinstaller-1.4.0\AndroidManifest.xml:47:17-88
+150-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\4c1a5138f40844f145027456483baf80\transformed\profileinstaller-1.4.0\AndroidManifest.xml:47:25-85
+151            </intent-filter>
+152            <intent-filter>
+152-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\4c1a5138f40844f145027456483baf80\transformed\profileinstaller-1.4.0\AndroidManifest.xml:49:13-51:29
+153                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+153-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\4c1a5138f40844f145027456483baf80\transformed\profileinstaller-1.4.0\AndroidManifest.xml:50:17-95
+153-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\PC\.gradle\caches\9.8.1\transforms\4c1a5138f40844f145027456483baf80\transformed\profileinstaller-1.4.0\AndroidManifest.xml:50:25-92
+154            </intent-filter>
+155        </receiver>
+156    </application>
+157
+158</manifest>

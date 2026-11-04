@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.foxfw.companion.WpaCrackTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-31T10:22:52.364Z" hostname="THEATREROOM" time="0.051">
+  <properties/>
+  <testcase name="eapolCrackRoundTrips" classname="com.foxfw.companion.WpaCrackTest" time="0.018"/>
+  <testcase name="crackReturnsNullWhenAbsent" classname="com.foxfw.companion.WpaCrackTest" time="0.001"/>
+  <testcase name="crackFindsPassphraseInWordlist" classname="com.foxfw.companion.WpaCrackTest" time="0.014"/>
+  <testcase name="pbkdf2SkipsPassphrasesOutOfWpaLengthRange" classname="com.foxfw.companion.WpaCrackTest" time="0.006"/>
+  <testcase name="rejectsNonPmkidLines" classname="com.foxfw.companion.WpaCrackTest" time="0.0"/>
+  <testcase name="pmkMatchesKnown80211iVector" classname="com.foxfw.companion.WpaCrackTest" time="0.006"/>
+  <testcase name="pmkidMatchesComputedVector" classname="com.foxfw.companion.WpaCrackTest" time="0.005"/>
+  <testcase name="parsesEapolLineFieldsAndKeyver" classname="com.foxfw.companion.WpaCrackTest" time="0.001"/>
+  <testcase name="parsesHc22000PmkidLine" classname="com.foxfw.companion.WpaCrackTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

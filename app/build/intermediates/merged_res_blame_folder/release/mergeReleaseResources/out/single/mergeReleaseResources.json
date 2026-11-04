@@ -1,0 +1,50 @@
+[
+    {
+        "merged": "com.foxfw.companion.app-release-34:/font_chakra_petch_semibold.ttf.flat",
+        "source": "com.foxfw.companion.app-main-35:/font/chakra_petch_semibold.ttf"
+    },
+    {
+        "merged": "com.foxfw.companion.app-release-34:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.foxfw.companion.app-main-35:/drawable/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "com.foxfw.companion.app-release-34:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.foxfw.companion.app-main-35:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "com.foxfw.companion.app-release-34:/font_ibm_plex_mono_medium.ttf.flat",
+        "source": "com.foxfw.companion.app-main-35:/font/ibm_plex_mono_medium.ttf"
+    },
+    {
+        "merged": "com.foxfw.companion.app-release-34:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.foxfw.companion.app-main-35:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    },
+    {
+        "merged": "com.foxfw.companion.app-release-34:/font_haxrcorp4089.ttf.flat",
+        "source": "com.foxfw.companion.app-main-35:/font/haxrcorp4089.ttf"
+    },
+    {
+        "merged": "com.foxfw.companion.app-release-34:/font_chakra_petch_bold.ttf.flat",
+        "source": "com.foxfw.companion.app-main-35:/font/chakra_petch_bold.ttf"
+    },
+    {
+        "merged": "com.foxfw.companion.app-release-34:/xml_file_paths.xml.flat",
+        "source": "com.foxfw.companion.app-main-35:/xml/file_paths.xml"
+    },
+    {
+        "merged": "com.foxfw.companion.app-release-34:/drawable-nodpi_foxfw_fox.png.flat",
+        "source": "com.foxfw.companion.app-main-35:/drawable-nodpi/foxfw_fox.png"
+    },
+    {
+        "merged": "com.foxfw.companion.app-release-34:/xml_device_filter.xml.flat",
+        "source": "com.foxfw.companion.app-main-35:/xml/device_filter.xml"
+    },
+    {
+        "merged": "com.foxfw.companion.app-release-34:/font_chakra_petch_medium.ttf.flat",
+        "source": "com.foxfw.companion.app-main-35:/font/chakra_petch_medium.ttf"
+    },
+    {
+        "merged": "com.foxfw.companion.app-release-34:/font_ibm_plex_mono_semibold.ttf.flat",
+        "source": "com.foxfw.companion.app-main-35:/font/ibm_plex_mono_semibold.ttf"
+    }
+]

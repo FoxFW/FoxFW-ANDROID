@@ -1,0 +1,18 @@
+R_DEF: Internal format may change without notice
+local
+color foxfw_bg
+color foxfw_icon_bg
+drawable foxfw_fox
+drawable ic_launcher_foreground
+font chakra_petch_bold
+font chakra_petch_medium
+font chakra_petch_semibold
+font haxrcorp4089
+font ibm_plex_mono_medium
+font ibm_plex_mono_semibold
+mipmap ic_launcher
+mipmap ic_launcher_round
+string app_name
+style Theme.FoxFW
+xml device_filter
+xml file_paths

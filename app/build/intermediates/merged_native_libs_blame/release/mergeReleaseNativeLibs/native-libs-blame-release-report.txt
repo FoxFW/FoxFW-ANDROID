@@ -1,0 +1,17 @@
+lib/arm64-v8a/libchaquopy_java.so->Project
+lib/arm64-v8a/libcrypto_chaquopy.so->Project
+lib/arm64-v8a/libcrypto_python.so->Project
+lib/arm64-v8a/libpython3.10.so->Project
+lib/arm64-v8a/libpython3.so->Project
+lib/arm64-v8a/libsqlite3_chaquopy.so->Project
+lib/arm64-v8a/libsqlite3_python.so->Project
+lib/arm64-v8a/libssl_chaquopy.so->Project
+lib/arm64-v8a/libssl_python.so->Project
+lib/arm64-v8a\libchamcrypto.so->Project
+lib/arm64-v8a\libfoxgpu.so->Project
+lib/arm64-v8a\libfoxsolver.so->Project
+lib/arm64-v8a\libpandora.so->Project
+lib/arm64-v8a/libandroidx.graphics.path.so->androidx.graphics:graphics-path:1.0.1
+lib/armeabi-v7a/libandroidx.graphics.path.so->androidx.graphics:graphics-path:1.0.1
+lib/x86/libandroidx.graphics.path.so->androidx.graphics:graphics-path:1.0.1
+lib/x86_64/libandroidx.graphics.path.so->androidx.graphics:graphics-path:1.0.1

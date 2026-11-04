@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.foxfw.companion.LanScanTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-31T10:22:52.284Z" hostname="THEATREROOM" time="0.007">
+  <properties/>
+  <testcase name="slash32IsJustSelf" classname="com.foxfw.companion.LanScanTest" time="0.001"/>
+  <testcase name="ipRoundTrips" classname="com.foxfw.companion.LanScanTest" time="0.004"/>
+  <testcase name="rejectsMalformedInput" classname="com.foxfw.companion.LanScanTest" time="0.0"/>
+  <testcase name="wideRangeIsCapped" classname="com.foxfw.companion.LanScanTest" time="0.002"/>
+  <testcase name="slash24ExcludesNetworkAndBroadcast" classname="com.foxfw.companion.LanScanTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

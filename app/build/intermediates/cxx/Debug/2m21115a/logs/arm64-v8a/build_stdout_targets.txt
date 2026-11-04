@@ -1,0 +1,2 @@
+ninja: Entering directory `D:\FoxFW-ANDROID\app\.cxx\Debug\2m21115a\arm64-v8a'
+ninja: no work to do.

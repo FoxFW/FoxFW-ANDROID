@@ -1,0 +1,50 @@
+[
+    {
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\9.8.1\\com.foxfw.companion.app-debug-35:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\9.8.1\\com.foxfw.companion.app-main-37:\\mipmap-anydpi-v26\\ic_launcher.xml"
+    },
+    {
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\9.8.1\\com.foxfw.companion.app-debug-35:\\drawable-nodpi_foxfw_fox.png.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\9.8.1\\com.foxfw.companion.app-main-37:\\drawable-nodpi\\foxfw_fox.png"
+    },
+    {
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\9.8.1\\com.foxfw.companion.app-debug-35:\\font_ibm_plex_mono_medium.ttf.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\9.8.1\\com.foxfw.companion.app-main-37:\\font\\ibm_plex_mono_medium.ttf"
+    },
+    {
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\9.8.1\\com.foxfw.companion.app-debug-35:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\9.8.1\\com.foxfw.companion.app-main-37:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+    },
+    {
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\9.8.1\\com.foxfw.companion.app-debug-35:\\font_chakra_petch_bold.ttf.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\9.8.1\\com.foxfw.companion.app-main-37:\\font\\chakra_petch_bold.ttf"
+    },
+    {
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\9.8.1\\com.foxfw.companion.app-debug-35:\\font_ibm_plex_mono_semibold.ttf.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\9.8.1\\com.foxfw.companion.app-main-37:\\font\\ibm_plex_mono_semibold.ttf"
+    },
+    {
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\9.8.1\\com.foxfw.companion.app-debug-35:\\xml_file_paths.xml.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\9.8.1\\com.foxfw.companion.app-main-37:\\xml\\file_paths.xml"
+    },
+    {
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\9.8.1\\com.foxfw.companion.app-debug-35:\\xml_device_filter.xml.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\9.8.1\\com.foxfw.companion.app-main-37:\\xml\\device_filter.xml"
+    },
+    {
+        "merged": "com.foxfw.companion.app-debug-35:/font_haxrcorp4089.ttf.flat",
+        "source": "com.foxfw.companion.app-main-37:/font/haxrcorp4089.ttf"
+    },
+    {
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\9.8.1\\com.foxfw.companion.app-debug-35:\\font_chakra_petch_semibold.ttf.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\9.8.1\\com.foxfw.companion.app-main-37:\\font\\chakra_petch_semibold.ttf"
+    },
+    {
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\9.8.1\\com.foxfw.companion.app-debug-35:\\font_chakra_petch_medium.ttf.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\9.8.1\\com.foxfw.companion.app-main-37:\\font\\chakra_petch_medium.ttf"
+    },
+    {
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\9.8.1\\com.foxfw.companion.app-debug-35:\\drawable_ic_launcher_foreground.xml.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\9.8.1\\com.foxfw.companion.app-main-37:\\drawable\\ic_launcher_foreground.xml"
+    }
+]

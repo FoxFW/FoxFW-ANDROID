@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="foxfw_bg">#0E0D10</color>
+    <color name="foxfw_icon_bg">#161018</color>
+    <string name="app_name">FoxFW</string>
+    <style name="Theme.FoxFW" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/foxfw_bg</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>

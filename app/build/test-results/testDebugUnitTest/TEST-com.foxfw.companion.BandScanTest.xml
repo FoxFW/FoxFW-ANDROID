@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.foxfw.companion.BandScanTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-31T10:22:51.335Z" hostname="THEATREROOM" time="0.032">
+  <properties/>
+  <testcase name="bandClassification" classname="com.foxfw.companion.BandScanTest" time="0.017"/>
+  <testcase name="wifi24FreqToChannel" classname="com.foxfw.companion.BandScanTest" time="0.0"/>
+  <testcase name="channelToCenterRoundTrips" classname="com.foxfw.companion.BandScanTest" time="0.0"/>
+  <testcase name="sixGhzAndJunkAreNotWifi24or5" classname="com.foxfw.companion.BandScanTest" time="0.0"/>
+  <testcase name="rssiToFractionClamps" classname="com.foxfw.companion.BandScanTest" time="0.001"/>
+  <testcase name="wifi5FreqToChannel" classname="com.foxfw.companion.BandScanTest" time="0.0"/>
+  <testcase name="aggregateCountsAndPeaksPerChannel" classname="com.foxfw.companion.BandScanTest" time="0.007"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
