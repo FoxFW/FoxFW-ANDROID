@@ -7,8 +7,8 @@ public final class BuildConfig {
   public static final boolean DEBUG = false;
   public static final String APPLICATION_ID = "com.foxfw.companion";
   public static final String BUILD_TYPE = "release";
-  public static final int VERSION_CODE = 2;
-  public static final String VERSION_NAME = "2.1";
+  public static final int VERSION_CODE = 3;
+  public static final String VERSION_NAME = "3.0";
   // Field from build type: release
   public static final boolean PRIVATE_BUILD = false;
 }

@@ -59,7 +59,7 @@ import com.foxfw.companion.ui.GradientText
  * Keep [VERSION] in lockstep with build.gradle versionName and the FoxFW tag.
  */
 object WhatsNew {
-    const val VERSION = "2.1"
+    const val VERSION = "3.0"
     private const val PREFS = "foxfw_prefs"
     private const val KEY = "whatsnew_seen_v"
 
@@ -229,7 +229,7 @@ fun WhatsNewSheet(onDismiss: () -> Unit) {
             FoxLogo(72.dp)
             GradientText("WHAT'S NEW", fontSize = 24)
             Text(
-                "FoxFW ${WhatsNew.VERSION} · companion",
+                "FoxFW Companion ${BuildConfig.VERSION_NAME}",
                 color = Fox.muted, fontFamily = FoxMono, fontSize = 11.sp,
             )
             Spacer(Modifier.height(2.dp))

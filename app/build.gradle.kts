@@ -24,8 +24,8 @@ android {
         applicationId = "com.foxfw.companion"
         minSdk = 26
         targetSdk = 37
-        versionCode = 2
-        versionName = "2.1"
+        versionCode = 3
+        versionName = "3.0"
         vectorDrawables { useSupportLibrary = true }
         ndk { abiFilters += listOf("arm64-v8a") }
     }

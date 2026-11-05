@@ -266,8 +266,14 @@ fun DeviceScreen(fle: FlipperBle, onConnect: () -> Unit, onDisconnect: () -> Uni
                     }
                     // Down-arrow (bottom-right) reveals the full DEVICE + POWER/BATTERY info below; up-arrow hides it.
                     // Sits in a short box pulled up tight against the row above so the card doesn't gain dead space.
-                    if (connected) Box(Modifier.fillMaxWidth().height(14.dp)) {
-                        Icon(
+                    Spacer(Modifier.height(10.dp))
+                    Box(Modifier.fillMaxWidth().height(16.dp)) {
+                        Text(
+                            "FoxFW Companion ${BuildConfig.VERSION_NAME}",
+                            color = Fox.faint, fontFamily = FoxMono, fontSize = 10.sp,
+                            modifier = Modifier.align(Alignment.CenterStart),
+                        )
+                        if (connected) Icon(
                             if (showDeviceInfo) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
                             if (showDeviceInfo) "Hide device info" else "Show device info",
                             tint = Fox.muted,
@@ -1353,7 +1359,7 @@ fun SettingsScreen(fle: FlipperBle) {
                 }
             }
 
-            Text("FoxFW Companion 2.1", color = Fox.faint, fontFamily = FoxMono, fontSize = 11.sp,
+            Text("FoxFW Companion ${BuildConfig.VERSION_NAME}", color = Fox.faint, fontFamily = FoxMono, fontSize = 11.sp,
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center, modifier = Modifier.fillMaxWidth().padding(top = 4.dp))
 
             if (toast.isNotEmpty()) {

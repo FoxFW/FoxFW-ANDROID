@@ -17,6 +17,7 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import java.util.UUID
@@ -25,6 +26,24 @@ import java.util.UUID
 class Offload(val uid: Long, val btn: IntArray, val ctrl: IntArray, val hop: LongArray)
 
 enum class Conn { DISCONNECTED, SCANNING, CONNECTING, CONNECTED }
+
+/**
+ * A Flipper Zero the picker found — either a live BLE advertisement or an already-bonded device.
+ * [rssi] is null for a bonded device that isn't currently advertising (no live signal reading).
+ */
+class FoundFlipper(
+    val device: BluetoothDevice,
+    val name: String,
+    val address: String,
+    val rssi: Int?,
+    val bonded: Boolean,
+)
+
+/** Why a connection that won't complete is being flagged to the user.
+ *  STALE_BOND = the phone reached the Flipper but could not finish linking (classically an old BLE
+ *  pairing left over from a firmware/name change → the user must "Forget" it). NOT_FOUND = never
+ *  reached the device at all (likely off, asleep or out of range). */
+enum class LinkHelp { STALE_BOND, NOT_FOUND }
 
 /**
  * GATT client for the FoxFW serial-service. The Flipper is the server: it notifies
@@ -71,6 +90,18 @@ class FlipperBle(private val app: Context) : FlipperLink {
     var deviceName by mutableStateOf<String?>(null); private set
     var incoming by mutableStateOf<Offload?>(null)   // set when a full offload arrives; cleared by the UI
 
+    // ---- Device picker: discover every nearby Flipper so a user with more than one can choose. ----
+    // discovering = a picker scan is running; discovered = the live, de-duped list the dialog renders.
+    var discovering by mutableStateOf(false); private set
+    val discovered = mutableStateListOf<FoundFlipper>()
+    private var discoveryTimeout: Runnable? = null
+
+    // ---- Link-trouble watchdog: flag a connect that never completes so the UI can guide the user. ----
+    // linkHelp is set ~15s into a stalled connect; null means no trouble / cleared on success.
+    var linkHelp by mutableStateOf<LinkHelp?>(null); private set
+    private var reachedAcl = false          // did this attempt reach the ACL link (STATE_CONNECTED)?
+    private var connectWatchdog: Runnable? = null
+
     private val main = Handler(Looper.getMainLooper())
     private val mgr get() = app.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
     private val adapter: BluetoothAdapter? get() = mgr.adapter
@@ -105,8 +136,30 @@ class FlipperBle(private val app: Context) : FlipperLink {
     fun connect() {
         wantConnected = true
         reconnectAttempts = 0
+        armConnectWatchdog()
         doConnect()
     }
+
+    /** Arm a 15s watchdog on a user-initiated connect. If we still aren't fully linked by then, raise
+     *  [linkHelp]: reaching the ACL link but not finishing ⇒ a stale bond; never reaching it ⇒ not found. */
+    private fun armConnectWatchdog() {
+        reachedAcl = false
+        linkHelp = null
+        cancelConnectWatchdog()
+        connectWatchdog = Runnable {
+            if (conn != Conn.CONNECTED && wantConnected)
+                linkHelp = if (reachedAcl) LinkHelp.STALE_BOND else LinkHelp.NOT_FOUND
+        }.also { main.postDelayed(it, 15_000) }
+    }
+
+    private fun cancelConnectWatchdog() { connectWatchdog?.let { main.removeCallbacks(it) }; connectWatchdog = null }
+
+    /** Fully linked (subscriptions done): stop the watchdog and clear any help box (auto-dismiss on a
+     *  late success). */
+    private fun onLinkReady() { conn = Conn.CONNECTED; cancelConnectWatchdog(); linkHelp = null }
+
+    /** UI dismissed the help box (chose to keep trying / close). Connection attempts are unaffected. */
+    fun dismissLinkHelp() { linkHelp = null }
 
     private fun doConnect() {
         val ad = adapter ?: return
@@ -131,8 +184,75 @@ class FlipperBle(private val app: Context) : FlipperLink {
         }, 12_000)
     }
 
+    // ---- Device picker discovery: list every nearby Flipper instead of grabbing the first one. ----
+
+    /** Begin (or restart) a scan that lists every nearby Flipper without connecting to any. The picker
+     *  dialog observes [discovered] + [discovering]; the user taps one, which calls [connectToDevice]. */
+    fun startDiscovery() {
+        val ad = adapter ?: return
+        if (!ad.isEnabled) return
+        // Fresh scan: drop stale entries, then seed with bonded Flippers (they may not be advertising).
+        stopDiscoveryScan()
+        discovered.clear()
+        val bonded = try { ad.bondedDevices } catch (_: Throwable) { null }
+        bonded?.forEach { dev ->
+            val n = try { dev.name } catch (_: Throwable) { null } ?: ""
+            if (n.startsWith("Flipper") || n.contains("Fox", true))
+                upsert(FoundFlipper(dev, n, dev.address ?: "", rssi = null, bonded = true))
+        }
+        val scanner = ad.bluetoothLeScanner ?: return
+        val settings = ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build()
+        discovering = true
+        try { scanner.startScan(null, settings, discoveryCb) } catch (_: Throwable) { discovering = false; return }
+        // Radios shouldn't scan forever: stop after 15s but keep the list on screen (Refresh restarts it).
+        discoveryTimeout = Runnable { stopDiscoveryScan() }.also { main.postDelayed(it, 15_000) }
+    }
+
+    /** Stop the picker scan (user cancelled, picked a device, or the 15s window elapsed). */
+    fun stopDiscovery() = stopDiscoveryScan()
+
+    private fun stopDiscoveryScan() {
+        discoveryTimeout?.let { main.removeCallbacks(it) }; discoveryTimeout = null
+        if (discovering) try { adapter?.bluetoothLeScanner?.stopScan(discoveryCb) } catch (_: Throwable) {}
+        discovering = false
+    }
+
+    /** Connect to the Flipper the user chose in the picker. */
+    fun connectToDevice(f: FoundFlipper) {
+        stopDiscoveryScan()
+        if (conn == Conn.CONNECTED || conn == Conn.CONNECTING) return
+        wantConnected = true
+        reconnectAttempts = 0
+        armConnectWatchdog()
+        connectTo(f.device, f.name)
+    }
+
+    /** Add or update a found Flipper (keyed by MAC), then sort bonded-first then strongest-signal-first. */
+    private fun upsert(f: FoundFlipper) {
+        val i = discovered.indexOfFirst { it.address == f.address }
+        if (i >= 0) {
+            val old = discovered[i]
+            // keep a known signal if this hit has none; a bonded flag, once set, stays set
+            discovered[i] = FoundFlipper(f.device, f.name.ifBlank { old.name }, f.address,
+                f.rssi ?: old.rssi, f.bonded || old.bonded)
+        } else discovered.add(f)
+        discovered.sortWith(compareByDescending<FoundFlipper> { it.bonded }.thenByDescending { it.rssi ?: Int.MIN_VALUE })
+    }
+
+    private val discoveryCb = object : ScanCallback() {
+        override fun onScanResult(callbackType: Int, result: ScanResult) {
+            val dev = result.device ?: return
+            val name = dev.name ?: result.scanRecord?.deviceName ?: return
+            if (!name.startsWith("Flipper") && !name.contains("Fox", true)) return
+            val bonded = try { dev.bondState == BluetoothDevice.BOND_BONDED } catch (_: Throwable) { false }
+            main.post { upsert(FoundFlipper(dev, name, dev.address ?: "", result.rssi, bonded)) }
+        }
+    }
+
     fun disconnect() {
         wantConnected = false   // user-initiated: stop auto-reconnect
+        stopDiscoveryScan()     // kill any picker scan still running
+        cancelConnectWatchdog(); linkHelp = null; reachedAcl = false
         try { adapter?.bluetoothLeScanner?.stopScan(scanCb) } catch (_: Throwable) {} // stop a scan in progress
         try { gatt?.disconnect() } catch (_: Throwable) {}
         try { gatt?.close() } catch (_: Throwable) {}
@@ -182,6 +302,7 @@ class FlipperBle(private val app: Context) : FlipperLink {
         override fun onConnectionStateChange(g: BluetoothGatt, status: Int, newState: Int) {
             if (newState == BluetoothProfile.STATE_CONNECTED) {
                 reconnectAttempts = 0   // got a link; reset the backoff
+                reachedAcl = true       // ACL up; if we never fully link, this points to a stale bond
                 g.requestMtu(247)
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                 deviceName = null; rxChar = null; rpcRxChar = null; gatt = null
@@ -213,11 +334,11 @@ class FlipperBle(private val app: Context) : FlipperLink {
                 g.setCharacteristicNotification(ch, true)
                 ch.getDescriptor(CCCD)?.let { cccdQueue.add(it to enable) }
             }
-            if (!writeNextCccd(g)) conn = Conn.CONNECTED  // nothing to subscribe; still usable
+            if (!writeNextCccd(g)) onLinkReady()  // nothing to subscribe; still usable
         }
 
         override fun onDescriptorWrite(g: BluetoothGatt, descriptor: BluetoothGattDescriptor, status: Int) {
-            if (!writeNextCccd(g)) conn = Conn.CONNECTED   // all subscriptions done
+            if (!writeNextCccd(g)) onLinkReady()   // all subscriptions done
         }
 
         @Deprecated("Deprecated in Java")

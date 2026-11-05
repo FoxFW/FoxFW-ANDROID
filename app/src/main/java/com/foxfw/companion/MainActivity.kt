@@ -101,6 +101,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             FoxFWTheme {
                 val fle = remember { FoxApplication.instance.ble }
+                var showPicker by remember { mutableStateOf(false) }
                 val perms = remember {
                     val l = ArrayList<String>()
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -121,7 +122,8 @@ class MainActivity : ComponentActivity() {
                         res[android.Manifest.permission.BLUETOOTH_CONNECT] == true &&
                             res[android.Manifest.permission.BLUETOOTH_SCAN] == true
                     else res[android.Manifest.permission.ACCESS_FINE_LOCATION] == true
-                    if (bleOk) fle.connect()
+                    // Instead of grabbing the first Flipper, open the picker and scan for all of them.
+                    if (bleOk) { showPicker = true; fle.startDiscovery() }
                 }
                 val onConnect: () -> Unit = {
                     if (fle.conn == Conn.CONNECTED || fle.conn == Conn.SCANNING || fle.conn == Conn.CONNECTING) fle.disconnect()
@@ -136,6 +138,12 @@ class MainActivity : ComponentActivity() {
                 androidx.compose.foundation.layout.Box(Modifier.fillMaxSize()) {
                     FoxApp(fle, onConnect, onExit = { finish() })
                     FoxGateDialogs(fle) // FoxFW v2.1+ / companion-IO gate on connect
+                    if (showPicker) FlipperPickerDialog(
+                        fle = fle,
+                        onConnect = { f -> showPicker = false; fle.connectToDevice(f) },
+                        onRefresh = { fle.startDiscovery() },
+                        onCancel = { showPicker = false; fle.stopDiscovery() },
+                    )
                     androidx.compose.animation.AnimatedVisibility(
                         visible = showWhatsNew && !splash,
                         enter = androidx.compose.animation.fadeIn(),
